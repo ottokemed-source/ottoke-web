@@ -1,0 +1,26 @@
+{
+  "name": "Flor roja",
+  "wish": "Atrae estabilidad emocional, vínculos genuinos y lealtad verdadera.",
+  "available": true,
+  "archived": false,
+  "orden": 50,
+  "pattern": "gwiazdka",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/flor-roja-iphone.png",
+      "alt": "Norigae flor roja en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/flor-roja-bolso.jpg",
+      "alt": "Norigae flor roja como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#CC2732",
+  "cutout": {
+    "w": 419,
+    "h": 1484,
+    "knot": 268,
+    "knotTop": 389,
+    "pivot": 0.493
+  }
+}

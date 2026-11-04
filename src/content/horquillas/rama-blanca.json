@@ -1,0 +1,22 @@
+{
+  "name": "Cristalia",
+  "available": true,
+  "archived": false,
+  "orden": 80,
+  "thread": "#7D7877",
+  "cutout": "src/assets/horquillas/horquilla-rama-blanca.png",
+  "fotos": [
+    {
+      "src": "src/assets/horquillas/horquilla-rama-blanca.png",
+      "alt": "Horquilla de rama plateada con detalles blancos y cadenas colgantes, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-rama-blanca-pelo.jpg",
+      "alt": "Horquilla de rama blanca con cadenas colgantes sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-rama-blanca-mano.jpg",
+      "alt": "Horquilla de rama blanca sostenida entre las manos, frente a un jardín"
+    }
+  ]
+}

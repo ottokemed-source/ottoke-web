@@ -1,0 +1,16 @@
+---
+// Plain at rest; thread colour, pattern and swing on hover or when it scrolls into view on touch.
+import Piece from './Piece.astro';
+import { price } from '../data/norigae.js';
+
+const { item } = Astro.props;
+---
+
+<a class="card" href={`/norigae/${item.slug}/`} data-card>
+  <span class="panel panel--pattern" style={`--thread:${item.thread}; --icon:var(--icon-${item.pattern})`}>
+    <Piece item={item} alt={`Norigae ${item.name.toLowerCase()}`} />
+  </span>
+  <span class="card__name">{item.name}</span>
+  <span class="card__wish">{item.wish}</span>
+  <span class="card__price">{item.available ? price.display : 'Agotado'}</span>
+</a>

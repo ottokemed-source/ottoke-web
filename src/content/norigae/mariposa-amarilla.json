@@ -1,0 +1,26 @@
+{
+  "name": "Mariposa amarilla",
+  "wish": "Atrae alegría, claridad mental y buena energía para nuevos comienzos.",
+  "available": true,
+  "archived": false,
+  "orden": 100,
+  "pattern": "wezel",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/mariposa-amarilla-iphone.png",
+      "alt": "Norigae mariposa amarilla en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/mariposa-amarilla-bolso.jpg",
+      "alt": "Norigae mariposa amarilla como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#DEC637",
+  "cutout": {
+    "w": 429,
+    "h": 1342,
+    "knot": 276,
+    "knotTop": 400,
+    "pivot": 0.59
+  }
+}

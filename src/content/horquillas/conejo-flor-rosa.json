@@ -1,0 +1,22 @@
+{
+  "name": "Primavera real",
+  "available": true,
+  "archived": false,
+  "orden": 50,
+  "thread": "#C19F8D",
+  "cutout": "src/assets/horquillas/horquilla-conejo-flor-rosa.png",
+  "fotos": [
+    {
+      "src": "src/assets/horquillas/horquilla-conejo-flor-rosa.png",
+      "alt": "Horquilla con conejo blanco, flor rosa y tres cadenas con cuentas en forma de gota, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-conejo-flor-rosa-pelo.jpg",
+      "alt": "Horquilla de conejo y flor rosa con tres cuentas de gota sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-conejo-flor-rosa-mano.jpg",
+      "alt": "Horquilla de conejo y flor rosa sostenida entre las manos, frente a un jardín"
+    }
+  ]
+}

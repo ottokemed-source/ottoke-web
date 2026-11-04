@@ -1,0 +1,45 @@
+{
+  "precio_norigae": 12000,
+  "precio_horquilla": 20000,
+  "descripcion_norigae": "Pequeños amuletos tejidos a mano. Cada forma, cada color, un deseo.",
+  "descripcion_horquillas": "Un detalle para llevar un poquito de Corea contigo.",
+  "descripcion_kimchi": "Descubre el sabor de la tradición coreana.",
+  "titulo_horquillas": "Horquilla de temporada",
+  "lead_horquilla": "Un detalle para llevar un poquito de Corea contigo. Diseños de temporada: cambian con cada colección.",
+  "preguntas_norigae": [
+    {
+      "question": "¿Cómo se lleva?",
+      "answer": "En el celular o en la cartera. El norigae es un adorno tradicional coreano que se colgaba del hanbok para acompañar y proteger."
+    },
+    {
+      "question": "¿Cómo se hace?",
+      "answer": "En Ottoke tejemos cada norigae a mano, en Medellín."
+    }
+  ],
+  "preguntas_horquillas": [
+    {
+      "question": "¿Cómo se lleva?",
+      "answer": "Recoge el pelo en un moño y pasa la horquilla para sujetarlo."
+    },
+    {
+      "question": "¿Hay más diseños?",
+      "answer": "Sí. Cada horquilla tiene un diseño distinto. Escríbenos y te mostramos las que hay."
+    }
+  ],
+  "pedido_norigae": [
+    {
+      "question": "¿Cómo lo pido?",
+      "answer": "Escríbenos por WhatsApp o por DM de Instagram y cuéntanos qué norigae quieres."
+    },
+    {
+      "question": "¿Qué viene con el norigae?",
+      "answer": "Cada norigae llega con una tarjeta que lleva su deseo."
+    }
+  ],
+  "pedido_horquillas": [
+    {
+      "question": "¿Cómo la pido?",
+      "answer": "Escríbenos por WhatsApp o por DM de Instagram y cuéntanos qué horquilla quieres."
+    }
+  ]
+}

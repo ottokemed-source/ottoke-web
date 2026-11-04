@@ -1,0 +1,26 @@
+{
+  "name": "Mariposa fucsia",
+  "wish": "Atrae ternura, amor bonito y conexiones sanas.",
+  "available": true,
+  "archived": false,
+  "orden": 110,
+  "pattern": "gwiazdka",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/mariposa-fucsia-iphone.png",
+      "alt": "Norigae mariposa fucsia en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/mariposa-fucsia-bolso.jpg",
+      "alt": "Norigae mariposa fucsia como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#EC3683",
+  "cutout": {
+    "w": 519,
+    "h": 1448,
+    "knot": 269,
+    "knotTop": 390,
+    "pivot": 0.512
+  }
+}

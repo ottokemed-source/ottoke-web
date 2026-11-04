@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import HairpinCard from '../../components/HairpinCard.astro';
+import { horquillas } from '../../data/horquillas.js';
+import { productos } from '../../data/productos.js';
+import panorama from '../../assets/fotos/horquillas-panorama-v1.png';
+
+const lead = productos.descripcion_horquillas;
+---
+
+<Base title="Horquillas coreanas de temporada en Medellín | Ottoke" description={`Las horquillas de Ottoke. ${lead}`} image="/og/horquilla-dragon-azul.jpg">
+  <Header slot="header" />
+  <div class="collection__panorama"><Image src={panorama} alt="Horquillas plateadas y doradas entre norigae sobre telas naturales" widths={[800, 1400, 2172]} sizes="100vw" format="webp" loading="eager" /></div>
+  <section class="collection-page wrap" aria-labelledby="titulo">
+    <h1 class="collection__label" id="titulo">{productos.titulo_horquillas}</h1>
+    <p class="collection__lead">{lead}</p>
+    <ul class="product-grid">{horquillas.map((item) => <li><HairpinCard item={item} /></li>)}</ul>
+  </section>
+</Base>
+
+<style>
+  .collection-page { padding-bottom: var(--space-section); }
+</style>

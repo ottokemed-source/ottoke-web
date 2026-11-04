@@ -1,0 +1,310 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import { site, whatsapp } from '../../data/site.js';
+import { price, kimchi } from '../../data/kimchi.js';
+import otto from '../../assets/logo/otto-oso.png';
+
+// Texts, photos, size and price: the console's "Kimchi" (src/content/kimchi.json). The
+// balcony photo is the client's own kimchi, retouched in ChatGPT by them (C2PA tag).
+const photos = kimchi.fotos;
+const lead = kimchi.lead;
+const statement = kimchi.frase;
+const order = whatsapp(kimchi.available ? `Hola Ottoke, quiero pedir un kimchi de ${price.weight}.` : 'Hola Ottoke, avísame cuando vuelva el kimchi.');
+// only what the page shows: name, lead, size and price
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: 'Kimchi Ottoke',
+    description: lead,
+    image: new URL('/og/kimchi.jpg', Astro.site).href,
+    brand: { '@type': 'Brand', name: site.name },
+    weight: { '@type': 'QuantitativeValue', value: kimchi.peso_g, unitCode: 'GRM' },
+    offers: {
+      '@type': 'Offer',
+      price: price.value,
+      priceCurrency: price.currency,
+      availability: `https://schema.org/${kimchi.available ? 'InStock' : 'OutOfStock'}`,
+      url: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  },
+];
+
+// line drawings in the hand of the other small icons, on a 24 px grid; the labels are the
+// console's six "rasgos", in this order
+const traits = [
+  { label: kimchi.rasgos[0], icon: 'M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.500V6a2 2 0 0 0-4 0v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.800 0-4.500-.900-6-2.300l-3.600-3.600a2 2 0 0 1 2.800-2.800L7 15' },
+  { label: kimchi.rasgos[1], icon: 'M7.500 3h9v3h-9zM6 9.500A3.500 3.500 0 0 1 9.500 6h5A3.500 3.500 0 0 1 18 9.500V18a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3zM10 16h.010M13.500 13h.010M11 10.500h.010M14 17.500h.010' },
+  { label: kimchi.rasgos[2], icon: 'M15 6.500c0-1.800 1-3 2.800-3M15 6.500c3.200.800 4.800 3.800 3.800 7.300-1.200 4-6 6.500-13.800 6.700 4.800-2.300 6.600-5.200 7.100-8.700.300-2.300 1.200-4.300 2.900-5.300z' },
+  { label: kimchi.rasgos[3], icon: 'M12 21s-6.500-5.700-6.500-11a6.500 6.500 0 0 1 13 0c0 5.300-6.500 11-6.500 11zM12 12.500a2.500 2.500 0 1 0 0-5 2.500 2.500 0 0 0 0 5z' },
+  { label: kimchi.rasgos[4], icon: 'M5 6h14v14H5zM5 10.500h14M9 3.500v4M15 3.500v4' },
+  { label: kimchi.rasgos[5], icon: 'M12 3v18M4.200 7.500l15.600 9M19.800 7.500l-15.600 9M9.500 4.500 12 7l2.500-2.500M9.500 19.500 12 17l2.500 2.500' },
+];
+
+// every link opened and read on 2026-10-12; the recipes are in English.
+// Stock photos under the Unsplash License, sources in _docs\ZRODLA-TRESCI.md
+const dishes = kimchi.platos;
+---
+
+<Base
+  title={`Kimchi hecho a mano en ${site.city} | Ottoke`}
+  description={`El kimchi de Ottoke: hecho a mano en ${site.city}, con ideas para comerlo y una guía para prepararlo en casa.`}
+  image="/og/kimchi.jpg"
+  jsonLd={jsonLd}
+>
+  <Header slot="header" />
+  <section class="product" aria-labelledby="titulo">
+    <div class="gallery" id="galeria" style={`--slides:${photos.length}`}>
+      <ul class="gallery__track" id="fotos" tabindex="0" aria-label="Fotos del kimchi Ottoke">
+        {
+          photos.map((photo, index) => (
+            <li class="gallery__slide">
+              <span class="panel panel--photo">
+                <Image src={photo.src} alt={photo.alt} widths={[600, 1000, 1254]} sizes="(min-width: 960px) 55vw, 100vw" format="webp" loading={index === 0 ? 'eager' : 'lazy'} />
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <button class="gallery__arrow gallery__arrow--prev" id="anterior" type="button" aria-label="Foto anterior" hidden>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M10 3 5 8l5 5" /></svg>
+      </button>
+      <button class="gallery__arrow gallery__arrow--next" id="siguiente" type="button" aria-label="Foto siguiente">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m6 3 5 5-5 5" /></svg>
+      </button>
+      <p class="gallery__bar" id="cuenta" aria-live="polite">1 / {photos.length}</p>
+    </div>
+
+    <div class="product__info stack">
+      <h1 id="titulo">Kimchi Ottoke</h1>
+      <p class="lead">{lead}</p>
+      <p class="price">{price.display} <span class="weight">{price.weight}</span>{!kimchi.available && <span class="sold-out">Agotado</span>}</p>
+      <div class="actions">
+        <a class="button" href={order} target="_blank" rel="noopener noreferrer">
+          {kimchi.available ? 'Pedir por WhatsApp' : 'Avísame cuando vuelva'}
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 3h12v8H7l-3 3v-3H2z" /></svg>
+        </a>
+      </div>
+
+      <div class="statement torn">
+        <Image src={otto} alt="" width={44} />
+        <p>{statement}</p>
+      </div>
+
+      <ul class="traits">
+        {
+          traits.map((trait) => (
+            <li>
+              <svg viewBox="0 0 24 24" width="45" height="45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={trait.icon} /></svg>
+              {trait.label}
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="health">
+        <h2 id="salud">{kimchi.salud_titulo}</h2>
+        <p>{kimchi.salud}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="comerlo">
+    <div class="wrap">
+      <h2 class="band__head" id="comerlo">Cómo comerlo</h2>
+      <ul class="dishes" tabindex="0" aria-label="Platos con kimchi">
+        {
+          dishes.map((dish) => (
+            <li>
+              <a class="dish" href={dish.href} target="_blank" rel="noopener noreferrer">
+                <Image class="dish__picture" src={dish.image} alt={dish.alt} widths={[400, 800, 1200]} sizes="(min-width: 720px) 33vw, 72vw" format="webp" loading="lazy" />
+                <span class="dish__name">{dish.name}</span>
+                <span class="dish__source"><span lang="ko-Latn">{dish.korean}</span>, receta en Maangchi (en inglés)</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="guide">
+        ¿Prefieres prepararlo tú?{' '}
+        <svg class="guide__arrow" viewBox="0 0 48 24" width="48" height="24" aria-hidden="true"><path d="M3 15c8-9 19-11 30-5M27 4.500l7 5.500-8 3" /></svg>
+        <a href="/descargas/kimchi-en-casa.pdf" download>Descarga nuestra guía Kimchi en casa<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 2.500v8M4.500 7.500 8 11l3.500-3.500M3 13.500h10" /></svg></a>, con la receta y dónde conseguir los ingredientes en {site.city}.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* the gallery is the norigae page's (components.css) */
+
+  /* statement: one sentence on a sheet of peach paper torn like the homepage prints
+     (.torn in components.css) */
+  .statement {
+    --paper: color-mix(in oklab, var(--color-durazno) 30%, var(--color-page));
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    margin-top: calc(var(--space-6) + var(--torn-gap));
+    padding: var(--space-6) var(--space-5);
+    text-align: center;
+  }
+
+  .statement p {
+    max-width: 24ch;
+    font-family: var(--font-heading);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-strong);
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  /* traits: icon and label, two across, after the Kimchi Club product page */
+  .traits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4) var(--space-3);
+    margin: var(--space-6) 0 0;
+    padding: var(--space-6) 0 0;
+    border-top: 1px solid var(--color-line);
+    font-size: var(--text-label);
+    font-weight: var(--weight-strong);
+    list-style: none;
+  }
+
+  .traits li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .traits svg {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.2;
+  }
+
+  /* health: the client's note under the traits, behind the same line */
+  .health {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .health h2 {
+    font-size: var(--text-h3);
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  /* dishes: square pictures in a row that scrolls sideways, after the recipes
+     under a Cultured Collective product */
+  .dishes {
+    display: flex;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    list-style: none;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .dishes li {
+    flex: none;
+    width: min(72%, 22rem);
+    scroll-snap-align: start;
+  }
+
+  .dish {
+    display: block;
+    text-decoration: none;
+  }
+
+  .dish__picture {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-soft);
+    background: var(--color-hueso);
+    object-fit: cover;
+  }
+
+  .dish__name,
+  .dish__source {
+    display: block;
+  }
+
+  .dish__name {
+    margin-top: var(--space-3);
+    font-weight: var(--weight-strong);
+  }
+
+  .dish:hover .dish__name {
+    text-decoration: underline;
+  }
+
+  .dish__source {
+    color: var(--color-ink-soft);
+    font-size: var(--text-label);
+  }
+
+  .guide {
+    max-width: var(--measure);
+    margin-top: var(--space-7);
+  }
+
+  /* a marker stroke in the colours that drift behind the footer */
+  .guide a {
+    padding: 0.1em 0.3em;
+    border-radius: var(--radius-soft);
+    background: linear-gradient(100deg, var(--color-durazno), var(--color-hueso), var(--color-oliva));
+    font-weight: var(--weight-strong);
+    text-decoration: none;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .guide a:hover {
+    text-decoration: underline;
+  }
+
+  /* a pen stroke from the question to the link, and the download mark on the link */
+  .guide svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vertical-align: middle;
+  }
+
+  .guide__arrow {
+    margin-inline: var(--space-1);
+    stroke-width: 1.6;
+  }
+
+  .guide a svg {
+    margin-left: var(--space-2);
+    stroke-width: 1.6;
+    vertical-align: -0.15em;
+  }
+
+  /* the buying column already ends with space: the dishes follow close behind */
+  .band {
+    padding-top: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .dishes li {
+      width: calc((100% - 2 * var(--space-4)) / 3);
+    }
+  }
+
+</style>
+
+<script>
+  import '../../scripts/product.js';
+</script>

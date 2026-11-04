@@ -1,0 +1,22 @@
+{
+  "name": "Leyenda de la sirena",
+  "available": true,
+  "archived": false,
+  "orden": 20,
+  "thread": "#A9947F",
+  "cutout": "src/assets/horquillas/horquilla-cola-de-sirena.png",
+  "fotos": [
+    {
+      "src": "src/assets/horquillas/horquilla-cola-de-sirena.png",
+      "alt": "Horquilla plateada con forma de cola de sirena y una cuenta tornasol, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-cola-de-sirena-pelo.jpg",
+      "alt": "Horquilla de cola de sirena con cuenta tornasol sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-cola-de-sirena-mano.jpg",
+      "alt": "Horquilla de cola de sirena sobre la palma de una mano, frente a un jardín"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Flor de invierno",
+  "available": true,
+  "archived": false,
+  "orden": 30,
+  "thread": "#A8B3B2",
+  "cutout": "src/assets/horquillas/horquilla-flores-plateadas.png",
+  "fotos": [
+    {
+      "src": "src/assets/horquillas/horquilla-flores-plateadas.png",
+      "alt": "Horquilla plateada con dos flores y piedras celestes, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-flores-plateadas-pelo.jpg",
+      "alt": "Horquilla de flores plateadas y centros celestes sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-flores-plateadas-mano.jpg",
+      "alt": "Horquilla de flores plateadas sobre la palma de una mano, frente a un jardín"
+    }
+  ]
+}

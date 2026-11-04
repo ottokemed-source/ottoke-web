@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { preguntas } from '../data/preguntas.js';
+
+const lead = 'Todo lo que quieres saber sobre Ottoke.';
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: preguntas.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer.join(' ') },
+    })),
+  },
+];
+---
+
+<Base title="Preguntas frecuentes | Ottoke, cultura coreana en Medellín" description={`Preguntas frecuentes sobre Ottoke, cultura coreana en Medellín: eventos, kimchi, norigae, pagos y envíos. ${lead}`} image="/og/norigae.jpg" jsonLd={jsonLd}>
+  <Header slot="header" />
+  <section class="faq wrap" aria-labelledby="titulo">
+    <h1 class="collection__label" id="titulo">Preguntas frecuentes</h1>
+    <p class="collection__lead">{lead}</p>
+    <div class="faq__list">
+      {
+        preguntas.map((item) => (
+          <details class="fold">
+            <summary>{item.question}</summary>
+            {item.answer.map((paragraph) => <p>{paragraph}</p>)}
+          </details>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .faq { padding-bottom: var(--space-section); }
+  .faq__list { max-width: 46rem; margin: var(--space-6) auto 0; border-bottom: 1px solid var(--color-line); }
+  .faq__list :global(.fold p + p) { margin-top: calc(-1 * var(--space-3)); }
+</style>

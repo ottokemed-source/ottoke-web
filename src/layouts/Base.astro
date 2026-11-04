@@ -1,0 +1,59 @@
+---
+import '@fontsource/poppins/latin-400.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource-variable/bricolage-grotesque/wght.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/components.css';
+import Footer from '../components/Footer.astro';
+
+const { title, description, image, jsonLd = [], draft = false } = Astro.props;
+// false until the client approves publication (SEO-AI.md, point 35); a draft page
+// (home-2, eventos/sin-fecha) stays out of search after that too
+const published = false;
+// Cloudflare Pages names the branch it builds: the draft preview (borrador) never gets indexed
+const preview = (process.env.CF_PAGES_BRANCH ?? 'main') !== 'main';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+// Structured data carries text the clients type in the console: escaping <, > and & keeps a
+// "</script>" in, say, an FAQ answer from ending the script tag (security audit, 2026-11-04).
+// The JSON reads the same to Google.
+const safeJson = (data) => JSON.stringify(data).replace(/[<>&]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {(!published || draft || preview) && <meta name="robots" content="noindex, nofollow" />}
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site).href} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="es_CO" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    {jsonLd.map((data) => <script type="application/ld+json" set:html={safeJson(data)} />)}
+  </head>
+  <body>
+    <a class="skip" href="#main">Saltar al contenido</a>
+    <slot name="header" />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // touch screens have no hover: wake a card when most of it is on screen
+      if (matchMedia('(hover: none)').matches) {
+        const onScreen = new IntersectionObserver(
+          (entries) => entries.forEach((entry) => entry.target.classList.toggle('is-on', entry.isIntersecting)),
+          { threshold: 0.7 },
+        );
+        document.querySelectorAll('[data-card]').forEach((card) => onScreen.observe(card));
+      }
+    </script>
+  </body>
+</html>

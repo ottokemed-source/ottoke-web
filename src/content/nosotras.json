@@ -1,0 +1,31 @@
+{
+  "fundadoras": [
+    {
+      "name": "Ivonne",
+      "about": "Publicista.",
+      "photo": "src/assets/fotos/nosotras/ivonne.webp",
+      "alt": "Ivonne, fundadora de Ottoke, sonríe sentada en unas escaleras de piedra con sombrero.",
+      "zoom": "scale: 1.45; transform-origin: 57% 92%"
+    },
+    {
+      "name": "Ana María",
+      "about": "Negociadora internacional.",
+      "photo": "src/assets/fotos/nosotras/ana-maria-2026-10.jpg",
+      "alt": "Ana María, fundadora de Ottoke, sonríe con blazer azul y corbata bajo una cúpula de cristal."
+    }
+  ],
+  "historia": [
+    {
+      "title": "Dos caminos, una pasión",
+      "text": "Ivonne es publicista y Ana María, negociadora internacional. Ambas aman la cultura coreana y quieren acercarla cada vez más a ti."
+    },
+    {
+      "title": "Corea nos unió",
+      "text": "Ivonne conoció Corea en agosto de 2024 y Ana María en octubre de 2025. El voluntariado fue el puente que les permitió conocerse y descubrir que compartían un mismo sueño."
+    },
+    {
+      "title": "De un taller a una comunidad",
+      "text": "En diciembre de 2025 realizaron su primer taller de kimchi en Medellín y, en febrero de 2026, junto a aliados coreanos, nació K-Cultura en la Mesa, un espacio para compartir Corea a través de sus sabores, tradiciones y experiencias culturales."
+    }
+  ]
+}

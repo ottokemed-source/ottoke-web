@@ -1,0 +1,22 @@
+{
+  "name": "Sueño sagrado",
+  "available": true,
+  "archived": false,
+  "orden": 70,
+  "thread": "#B3C1C9",
+  "cutout": "src/assets/horquillas/horquilla-luna-azul.png",
+  "fotos": [
+    {
+      "src": "src/assets/horquillas/horquilla-luna-azul.png",
+      "alt": "Horquilla con luna azul, adorno plateado y una estrella colgante, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-luna-azul-pelo.jpg",
+      "alt": "Horquilla de luna azul con estrella plateada colgante sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-luna-azul-mano.jpg",
+      "alt": "Horquilla de luna azul sostenida entre las manos, frente a un jardín"
+    }
+  ]
+}

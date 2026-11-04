@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { norigae, price } from '../../data/norigae.js';
+import { site } from '../../data/site.js';
+import { productos } from '../../data/productos.js';
+import panorama from '../../assets/fotos/norigae-panorama-v1.png';
+
+const lead = productos.descripcion_norigae;
+---
+
+<Base
+  title={`Norigae tejidos a mano en ${site.city} | Ottoke`}
+  description={`Los norigae de Ottoke: amuletos coreanos tejidos a mano en ${site.city}. Cada forma, cada color, un deseo. ${price.display}.`}
+  image="/og/norigae.jpg"
+>
+  <Header slot="header" />
+  <div class="collection__panorama"><Image src={panorama} alt="Norigae de flores, mariposas y pez sobre lino en una mesa de madera" widths={[800, 1400, 2172]} sizes="100vw" format="webp" loading="eager" /></div>
+  <section class="collection-page wrap" aria-labelledby="titulo">
+    <h1 class="collection__label" id="titulo">Norigae</h1>
+    <p class="collection__lead">{lead}</p>
+    <ul class="product-grid">{norigae.map((item) => <li><ProductCard item={item} /></li>)}</ul>
+  </section>
+</Base>
+
+<style>
+  .collection-page { padding-bottom: var(--space-section); }
+</style>

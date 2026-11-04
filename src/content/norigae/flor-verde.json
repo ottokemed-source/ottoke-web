@@ -1,0 +1,26 @@
+{
+  "name": "Flor verde",
+  "wish": "Atrae renovación, bienestar y salud para cuerpo y alma.",
+  "available": true,
+  "archived": false,
+  "orden": 80,
+  "pattern": "gwiazdka",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/flor-verde-iphone.png",
+      "alt": "Norigae flor verde en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/flor-verde-bolso.jpg",
+      "alt": "Norigae flor verde como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#72AB52",
+  "cutout": {
+    "w": 373,
+    "h": 1414,
+    "knot": 270,
+    "knotTop": 392,
+    "pivot": 0.597
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "edition": "2.ª edición de K-cultura en la mesa",
+  "name": "Año Nuevo Coreano",
+  "starts": "2026-03-15T10:00",
+  "ends": "2026-03-15T12:00",
+  "place": "Medellín",
+  "estado": "programado",
+  "recuerdo": {
+    "text": [
+      "Celebramos el Año Nuevo Lunar al estilo coreano, el Seollal, en una nueva edición de K-cultura en la mesa.",
+      "Disfrutamos un platillo coreano de temporada con bebida, aprendimos a jugar yutnori, el juego tradicional coreano, y nos pusimos el hanbok. Cada persona se llevó una foto tipo polaroid de recuerdo y el material digital del evento."
+    ],
+    "card": "src/assets/fotos/eventos/seollal-charla.jpg",
+    "cardAlt": "Una mujer con gorra habla al micrófono bajo un letrero de neón rojo en coreano, junto a una pantalla.",
+    "fotos": [
+      {
+        "src": "src/assets/fotos/eventos/seollal-hanbok.jpg",
+        "alt": "Una participante sonríe con un hanbok rosado frente a un muro pintado en blanco y negro.",
+        "wide": false
+      },
+      {
+        "src": "src/assets/fotos/eventos/seollal-grupo.jpg",
+        "alt": "Tres mujeres posan sonrientes frente a una bandera de Corea del Sur con globos rojos, blancos y azules.",
+        "wide": false
+      },
+      {
+        "src": "src/assets/fotos/eventos/seollal-amigas.jpg",
+        "alt": "Tres participantes posan haciendo gestos de corazón junto a la bandera de Corea del Sur.",
+        "wide": false
+      }
+    ]
+  }
+}

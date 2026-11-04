@@ -1,0 +1,313 @@
+# Pages CMS: the console where Ivonne and Ana María edit the site (app.pagescms.org).
+# Every value here lands in a JSON file under src/content; src/data/*.js checks it at build
+# time, so a wrong value stops the build and the live site keeps its last good version.
+# Saves go to the "borrador" branch; "Publicar" (actions below) copies it to the live site.
+
+settings:
+  content:
+    merge: true # keeps the fields the cutout workflow writes (thread, cutout)
+
+media:
+  - name: fotos
+    label: Fotos
+    input: src/assets/fotos
+    output: src/assets/fotos
+    rename: safe
+    extensions: [jpg, jpeg, png, webp]
+
+actions:
+  - name: publicar
+    label: Publicar en la página
+    workflow: publicar.yml
+    ref: borrador
+    confirm:
+      title: ¿Publicar los cambios?
+      message: Todo lo que guardaron y revisaron en la página de prueba pasa a la página real en un par de minutos.
+      button: Publicar
+
+content:
+  # --- Datos generales ---------------------------------------------------------
+  - name: tienda
+    label: Contacto, pago y envío
+    type: file
+    path: src/content/tienda.json
+    format: json
+    fields:
+      - name: whatsapp
+        label: WhatsApp
+        description: Con +57 y sin espacios, por ejemplo +573011175647.
+        type: string
+        required: true
+        pattern:
+          regex: '^\+57\d{10}$'
+          message: Escribe +57 y los 10 números, sin espacios.
+      - { name: pago, label: Cómo pagar, description: Sale en las preguntas de cada producto y en Preguntas frecuentes., type: text, required: true, options: { maxlength: 200 } }
+      - { name: envio, label: Envíos, type: text, required: true, options: { maxlength: 400 } }
+      - { name: instagram, label: Instagram (enlace), type: string, required: true }
+      - { name: tiktok, label: TikTok (enlace), type: string, required: true }
+      - { name: dm, label: Mensaje directo de Instagram (enlace), type: string, required: true }
+
+  - name: productos
+    label: Precios y textos de productos
+    type: file
+    path: src/content/productos.json
+    format: json
+    fields:
+      - { name: precio_norigae, label: Precio de cada norigae (COP), description: Solo números, sin puntos. Ejemplo 12000., type: number, required: true, options: { min: 1000 } }
+      - { name: precio_horquilla, label: Precio de cada horquilla (COP), description: Solo números, sin puntos., type: number, required: true, options: { min: 1000 } }
+      - { name: titulo_horquillas, label: Título de la colección de horquillas, type: string, required: true, options: { maxlength: 40 } }
+      - { name: descripcion_norigae, label: Frase de los norigae, type: string, required: true, options: { maxlength: 120 } }
+      - { name: descripcion_horquillas, label: Frase de las horquillas, type: string, required: true, options: { maxlength: 120 } }
+      - { name: descripcion_kimchi, label: Frase del kimchi (página Productos), type: string, required: true, options: { maxlength: 120 } }
+      - { name: lead_horquilla, label: Texto en la página de cada horquilla, type: text, required: true, options: { maxlength: 200 } }
+      - name: preguntas_norigae
+        label: Preguntas sobre el norigae
+        description: '"¿Qué significa?" se arma solo con el deseo de cada norigae.'
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Pregunta, type: string, required: true, options: { maxlength: 120 } }
+          - { name: answer, label: Respuesta, type: text, required: true }
+      - name: pedido_norigae
+        label: Preguntas sobre el pedido de norigae
+        description: Envíos y pago se agregan solos.
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Pregunta, type: string, required: true, options: { maxlength: 120 } }
+          - { name: answer, label: Respuesta, type: text, required: true }
+      - name: preguntas_horquillas
+        label: Preguntas sobre la horquilla
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Pregunta, type: string, required: true, options: { maxlength: 120 } }
+          - { name: answer, label: Respuesta, type: text, required: true }
+      - name: pedido_horquillas
+        label: Preguntas sobre el pedido de horquillas
+        description: '"¿Está disponible?", envíos y pago se agregan solos.'
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Pregunta, type: string, required: true, options: { maxlength: 120 } }
+          - { name: answer, label: Respuesta, type: text, required: true }
+
+  # --- Productos -------------------------------------------------------------
+  - name: norigae
+    label: Norigae
+    type: collection
+    path: src/content/norigae
+    format: json
+    filename: '{primary}.json'
+    operations: { rename: false, delete: false }
+    view:
+      primary: name
+      fields: [name, available, orden]
+      sort: [orden, name]
+    fields:
+      - { name: name, label: Nombre, description: 'Ejemplo: Flor morada.', type: string, required: true, options: { maxlength: 17 } }
+      - { name: wish, label: Deseo, description: 'Una frase. Ejemplo: Atrae paz interior, intuición y decisiones claras.', type: text, required: true, options: { maxlength: 75 } }
+      - { name: available, label: Disponible, description: Apágalo cuando se agote. La página muestra "Agotado" y el botón "Avísame cuando vuelva"., type: boolean, default: true }
+      - { name: archived, label: Ocultar de la página, description: Para diseños que ya no van a volver., type: boolean, default: false }
+      - { name: orden, label: Orden, description: Los números más bajos salen primero., type: number, default: 100 }
+      - name: pattern
+        label: Dibujo del fondo
+        type: select
+        required: true
+        default: wezel
+        options:
+          values:
+            - { name: wezel, label: Nudo }
+            - { name: gwiazdka, label: Estrella }
+            - { name: serce, label: Corazón }
+      - name: foto_recorte
+        label: Foto para recortar
+        description: El norigae colgado de su cordón, sobre un fondo claro, con luz de día. La página le quita el fondo sola en unos minutos.
+        type: image
+        options: { media: fotos, path: originales }
+      - name: fotos
+        label: Más fotos
+        description: Salen en la galería en este orden, después del norigae recortado.
+        type: object
+        list: { max: 4 }
+        fields:
+          - { name: src, label: Foto, type: image, required: true, options: { media: fotos } }
+          - { name: alt, label: Qué se ve en la foto, description: Para personas que no ven la foto y para Google., type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+      - { name: thread, type: string, hidden: true }
+      - name: cutout
+        type: object
+        hidden: true
+        fields:
+          - { name: w, type: number }
+          - { name: h, type: number }
+          - { name: knot, type: number }
+          - { name: knotTop, type: number }
+          - { name: pivot, type: number }
+
+  - name: horquillas
+    label: Horquillas
+    type: collection
+    path: src/content/horquillas
+    format: json
+    filename: '{primary}.json'
+    operations: { rename: false, delete: false }
+    view:
+      primary: name
+      fields: [name, available, orden]
+      sort: [orden, name]
+    fields:
+      - { name: name, label: Nombre, type: string, required: true, options: { maxlength: 23 } }
+      - { name: available, label: Disponible, description: Apágalo cuando se agote., type: boolean, default: true }
+      - { name: archived, label: Ocultar de la página, description: Para horquillas de una temporada que terminó., type: boolean, default: false }
+      - { name: orden, label: Orden, type: number, default: 100 }
+      - name: foto_recorte
+        label: Foto para recortar
+        description: La horquilla sola, sobre un fondo claro. La página le quita el fondo sola.
+        type: image
+        options: { media: fotos, path: originales }
+      - name: fotos
+        label: Fotos
+        description: 'Primero la horquilla sola, luego en el pelo, luego en la mano.'
+        type: object
+        list: { min: 2, max: 4 }
+        fields:
+          - { name: src, label: Foto, type: image, required: true, options: { media: fotos } }
+          - { name: alt, label: Qué se ve en la foto, type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+      - { name: thread, type: string, hidden: true }
+      - { name: cutout, type: string, hidden: true }
+
+  - name: kimchi
+    label: Kimchi
+    type: file
+    path: src/content/kimchi.json
+    format: json
+    fields:
+      - { name: precio, label: Precio (COP), type: number, required: true, options: { min: 1000 } }
+      - { name: peso_g, label: Peso (gramos), type: number, required: true, options: { min: 50 } }
+      - { name: available, label: Disponible, type: boolean, default: true }
+      - { name: lead, label: Primera frase, type: text, required: true, options: { maxlength: 200 } }
+      - { name: frase, label: Frase en el papel, type: string, required: true, options: { maxlength: 120 } }
+      - { name: rasgos, label: Las seis características, description: Siempre seis, en este orden (cada una tiene su dibujo)., type: string, list: { min: 6, max: 6 }, options: { maxlength: 30 } }
+      - { name: salud_titulo, label: Título de salud, type: string, required: true, options: { maxlength: 90 } }
+      - { name: salud, label: Texto de salud, type: text, required: true, options: { maxlength: 400 } }
+      - name: fotos
+        label: Fotos
+        type: object
+        list: { min: 1, max: 6 }
+        fields:
+          - { name: src, label: Foto, type: image, required: true, options: { media: fotos } }
+          - { name: alt, label: Qué se ve en la foto, type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+      - name: platos
+        label: Cómo comerlo
+        type: object
+        list: { max: 6 }
+        fields:
+          - { name: name, label: Plato, type: string, required: true }
+          - { name: korean, label: Nombre coreano, type: string, required: true }
+          - { name: href, label: Enlace a la receta, type: string, required: true }
+          - { name: image, label: Foto, type: image, required: true, options: { media: fotos } }
+          - { name: alt, label: Qué se ve en la foto, type: string, required: true }
+
+  # --- Eventos ---------------------------------------------------------------
+  - name: eventos
+    label: Eventos
+    type: collection
+    path: src/content/eventos
+    format: json
+    filename: '{primary}.json'
+    operations: { rename: false }
+    view:
+      primary: name
+      fields: [name, starts, estado]
+      sort: [starts]
+    fields:
+      - { name: name, label: Nombre, description: 'Ejemplo: Regala un Norigae.', type: string, required: true }
+      - { name: edition, label: Edición, description: 'Ejemplo: Navidad 2026 o 3.ª edición.', type: string, required: true }
+      - { name: poster1, label: Nombre en el afiche, línea 1, description: Máximo 14 letras por línea., type: string, options: { maxlength: 14 } }
+      - { name: poster2, label: Nombre en el afiche, línea 2, type: string, options: { maxlength: 14 } }
+      - { name: theme, label: Tema, type: string }
+      - { name: lead, label: Descripción, type: text, options: { maxlength: 700 } }
+      - { name: includes, label: Qué incluye, type: text, options: { maxlength: 300 } }
+      - { name: deposit, label: Abono, type: text, options: { maxlength: 200 } }
+      - { name: starts, label: Empieza, type: date, required: true, options: { time: true, format: "yyyy-MM-dd'T'HH:mm" } }
+      - { name: ends, label: Termina, type: date, required: true, options: { time: true, format: "yyyy-MM-dd'T'HH:mm" } }
+      - { name: deadline, label: Inscripciones hasta, description: Si lo dejas vacío, las inscripciones cierran cuando empieza., type: date, options: { time: true, format: "yyyy-MM-dd'T'HH:mm" } }
+      - { name: place, label: Lugar, type: string, required: true }
+      - { name: placeNote, label: Nota del lugar, type: string }
+      - { name: price, label: Precio por persona (COP), description: Solo números., type: number, options: { min: 0 } }
+      - { name: seats, label: Cupos, description: Si lo dejas vacío, el afiche dice "Cupos limitados"., type: number, options: { min: 1 } }
+      - { name: full, label: Sin cupos, description: Cierra las inscripciones., type: boolean, default: false }
+      - name: estado
+        label: Estado
+        type: select
+        default: programado
+        options:
+          values:
+            - { name: programado, label: Programado }
+            - { name: aplazado, label: Aplazado (nueva fecha) }
+            - { name: cancelado, label: Cancelado (no se muestra) }
+      - name: fotos
+        label: Fotos bajo el afiche
+        type: object
+        list: { max: 6 }
+        fields:
+          - { name: src, label: Foto, type: image, required: true, options: { media: fotos, path: eventos } }
+          - { name: alt, label: Qué se ve en la foto, type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+      - name: recuerdo
+        label: Después del evento
+        description: Al llenarlo, el evento pasa a "Eventos anteriores" cuando termina.
+        type: object
+        fields:
+          - { name: text, label: Qué hicimos (párrafos), type: text, list: { max: 3 } }
+          - { name: card, label: Foto principal, type: image, options: { media: fotos, path: eventos } }
+          - { name: cardAlt, label: Qué se ve en la foto principal, type: string }
+          - name: fotos
+            label: Más fotos
+            type: object
+            list: { max: 6 }
+            fields:
+              - { name: src, label: Foto, type: image, required: true, options: { media: fotos, path: eventos } }
+              - { name: alt, label: Qué se ve en la foto, type: string, required: true }
+              - { name: wide, label: Foto ancha, type: boolean, default: false }
+
+  # --- Páginas ---------------------------------------------------------------
+  - name: preguntas
+    label: Preguntas frecuentes
+    type: file
+    path: src/content/preguntas.json
+    format: json
+    fields:
+      - name: preguntas
+        label: Preguntas
+        description: '"¿Cómo pago?" y "¿Hacen envíos?" se agregan solas desde Contacto, pago y envío.'
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Pregunta, type: string, required: true, options: { maxlength: 120 } }
+          - { name: answer, label: Respuesta (párrafos), type: text, required: true, list: { min: 1, max: 4 } }
+
+  - name: nosotras
+    label: Nosotras
+    type: file
+    path: src/content/nosotras.json
+    format: json
+    fields:
+      - name: fundadoras
+        label: Fundadoras
+        type: object
+        list: { min: 2, max: 2 }
+        fields:
+          - { name: name, label: Nombre, type: string, required: true }
+          - { name: about, label: Profesión, type: string, required: true }
+          - { name: photo, label: Foto, type: image, required: true, options: { media: fotos, path: nosotras } }
+          - { name: alt, label: Qué se ve en la foto, type: string, required: true }
+          - { name: zoom, type: string, hidden: true }
+      - name: historia
+        label: Nuestra historia
+        type: object
+        list: { min: 3, max: 3 }
+        fields:
+          - { name: title, label: Título, type: string, required: true, options: { maxlength: 40 } }
+          - { name: text, label: Texto, type: text, required: true, options: { maxlength: 300 } }
+          - { name: photo, label: Foto (opcional), type: image, options: { media: fotos, path: nosotras } }
+          - { name: alt, label: Qué se ve en la foto, type: string }

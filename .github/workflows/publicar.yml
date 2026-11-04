@@ -1,0 +1,39 @@
+# The "Publicar en la página" button in Pages CMS: copies the draft (borrador), which the
+# clients checked on its preview address, to the live site (main). Cloudflare Pages builds
+# main as the live site and borrador as the preview.
+name: Publicar
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: Pages CMS payload as JSON
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Copiar el borrador a la página
+        run: |
+          git config user.name "ottoke-bot"
+          git config user.email "ottoke-bot@users.noreply.github.com"
+          git merge --no-edit origin/borrador
+          git push origin main
+          # keep the draft level with the live site, so the next edits start from it
+          git checkout borrador
+          git merge --ff-only main
+          git push origin borrador

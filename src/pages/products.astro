@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import ProductCard from '../components/ProductCard.astro';
+import HairpinCard from '../components/HairpinCard.astro';
+import { norigae } from '../data/norigae.js';
+import { horquillas } from '../data/horquillas.js';
+import { price as kimchiPrice } from '../data/kimchi.js';
+import { site } from '../data/site.js';
+import { productos } from '../data/productos.js';
+import collection from '../assets/fotos/norigae-kolekcja.png';
+import clipsCollection from '../assets/fotos/horquillas-kolekcja-v1.png';
+import kimchi from '../assets/fotos/kimchi-ottoke-kafelki-v1.png';
+import kimchiServing from '../assets/fotos/kimchi-ottoke-widelec-v3.png';
+import norigaePanorama from '../assets/fotos/norigae-panorama-v1.png';
+import hairpinPanorama from '../assets/fotos/horquillas-panorama-v1.png';
+import kimchiPanorama from '../assets/fotos/kimchi-panorama-v2.png';
+
+const categories = [
+  { id: 'norigae', name: 'Norigae', description: productos.descripcion_norigae, image: collection, alt: 'Colección de norigae de flores, mariposas y pez sobre papel claro' },
+  { id: 'horquillas', name: 'Horquillas', description: productos.descripcion_horquillas, image: clipsCollection, alt: 'Colección de siete horquillas de Ottoke sobre papel claro' },
+  { id: 'kimchi', href: '/kimchi/', name: 'Kimchi', description: productos.descripcion_kimchi, image: kimchi, alt: 'Tarro de kimchi Ottoke con etiqueta crema y tapa verde oliva' },
+];
+---
+
+<Base title="Norigae, horquillas y kimchi en Medellín | Ottoke" description="Explora los norigae, las horquillas y el kimchi de Ottoke, desde Medellín." image="/og/norigae.jpg">
+  <Header slot="header" />
+  <h1 class="products-title">Productos</h1>
+
+  <section class="categories wrap" aria-label="Explora las categorías">
+    {categories.map((category) => (
+      <a class="category" href={category.href ?? `#${category.id}`}>
+        <div class="category__image"><Image src={category.image} alt={category.alt} widths={[400, 800, 1200]} sizes="(min-width: 720px) 33vw, 100vw" format="webp" /></div>
+        <h2>{category.name}</h2>
+        <p>{category.description}</p>
+        <span class="category__action">Explorar {category.name.toLowerCase()}</span>
+      </a>
+    ))}
+  </section>
+
+  <section class="collection" id="norigae" aria-labelledby="norigae-title">
+    <div class="collection__panorama"><Image src={norigaePanorama} alt="Norigae de flores, mariposas y pez sobre lino en una mesa de madera" widths={[800, 1400, 2172]} sizes="100vw" format="webp" /></div>
+    <h2 class="collection__label wrap" id="norigae-title">Norigae</h2>
+    <ul class="product-grid wrap">{norigae.map((item) => <li><ProductCard item={item} /></li>)}</ul>
+    <p class="collection__more wrap"><a href="/norigae/">Ver todos los norigae</a></p>
+  </section>
+  <section class="collection" id="horquillas" aria-labelledby="horquillas-title">
+    <div class="collection__panorama"><Image src={hairpinPanorama} alt="Horquillas plateadas y doradas entre norigae sobre telas naturales" widths={[800, 1400, 2172]} sizes="100vw" format="webp" /></div>
+    <h2 class="collection__label wrap" id="horquillas-title">{productos.titulo_horquillas}</h2>
+    <ul class="product-grid wrap">{horquillas.map((item) => <li><HairpinCard item={item} /></li>)}</ul>
+    <p class="collection__more wrap"><a href="/horquillas/">Ver todas las horquillas</a></p>
+  </section>
+  <section class="collection" id="kimchi" aria-labelledby="kimchi-title">
+    <div class="collection__panorama"><Image src={kimchiPanorama} alt="Tres tarros de kimchi Ottoke entre paños de lino y cerámica en una repisa de madera" widths={[800, 1400, 2172]} sizes="100vw" format="webp" /></div>
+    <h2 class="collection__label wrap" id="kimchi-title">Kimchi</h2>
+    <ul class="product-grid wrap"><li><a class="preview-product" href="/kimchi/"><span class="preview-product__photo"><Image class="preview-product__base" src={kimchi} alt="Tarro de kimchi Ottoke sobre madera y azulejos claros" widths={[400, 800]} sizes="(min-width: 720px) 25vw, 50vw" format="webp" /><Image class="preview-product__scene" src={kimchiServing} alt="" widths={[400, 800]} sizes="(min-width: 720px) 25vw, 50vw" format="webp" /></span><span class="card__name">Kimchi Ottoke</span><span class="card__wish">Hecho a mano en {site.city}.</span><span class="card__price">{kimchiPrice.display}<span class="weight">{kimchiPrice.weight}</span></span></a></li></ul>
+  </section>
+</Base>
+
+<style>
+  .products-title { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .categories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); padding-block: var(--space-7) var(--space-section); }
+  .category { text-decoration: none; }
+  .category__image { overflow: hidden; aspect-ratio: 1; border-radius: var(--radius-soft); background: var(--color-hueso); }
+  .category__image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+  .category:hover .category__image img { transform: scale(1.025); }
+  .category h2 { margin-top: var(--space-5); }
+  .category p { max-width: 34ch; margin-top: var(--space-2); }
+  .category__action { display: inline-block; margin-top: var(--space-4); font-size: var(--text-label); text-decoration: underline; text-underline-offset: 0.3em; }
+  /* the panorama, label and grid of a collection are in components.css */
+  .collection { scroll-margin-top: var(--space-5); padding-bottom: var(--space-7); }
+  .preview-product { display: block; text-decoration: none; }
+  /* the kimchi card has the square, corner and lines of a norigae card in this grid */
+  .preview-product__photo { display: block; position: relative; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-soft); background: var(--color-hueso); }
+  .preview-product__photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.65s, transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
+  .preview-product__photo :global(.preview-product__scene) { opacity: 0; transform: scale(1.04) rotate(-1deg); }
+  .preview-product:is(:hover, :focus-visible) :global(.preview-product__scene) { opacity: 1; transform: scale(1) rotate(0); }
+  .preview-product:is(:hover, :focus-visible) :global(.preview-product__base) { opacity: 0; transform: scale(0.98); }
+  @media (max-width: 719px) {
+    .categories { grid-template-columns: 1fr; gap: var(--space-7); }
+  }
+  @media (prefers-reduced-motion: reduce) { .category__image img { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .preview-product__photo :global(img) { transition: none; transform: none; } }
+</style>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if (!reduced.matches) {
+    document.querySelectorAll('.category__image').forEach((image, index) => {
+      image.animate([{ opacity: 0.6, transform: 'translateY(24px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 800, delay: index * 100, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+    });
+  }
+  document.querySelectorAll<HTMLAnchorElement>('.category').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const target = document.getElementById(link.hash.slice(1));
+      if (!target) return;
+      event.preventDefault();
+      history.pushState(null, '', link.hash);
+      target.scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'start' });
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    });
+  });
+</script>

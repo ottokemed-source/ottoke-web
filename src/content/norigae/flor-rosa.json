@@ -1,0 +1,26 @@
+{
+  "name": "Flor rosa",
+  "wish": "Atrae amor auténtico, vínculos sinceros y apertura del corazón.",
+  "available": true,
+  "archived": false,
+  "orden": 70,
+  "pattern": "wezel",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/flor-rosa-iphone.png",
+      "alt": "Norigae flor rosa en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/flor-rosa-bolso.jpg",
+      "alt": "Norigae flor rosa como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#D696B0",
+  "cutout": {
+    "w": 452,
+    "h": 1588,
+    "knot": 279,
+    "knotTop": 405,
+    "pivot": 0.415
+  }
+}

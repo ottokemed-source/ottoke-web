@@ -1,0 +1,474 @@
+---
+import '@fontsource/gowun-dodum/latin-400.css';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import FilmPlayer from '../components/FilmPlayer.astro';
+import { Image, getImage } from 'astro:assets';
+import filmGroundFile from '../assets/home/film-ground.webp';
+import groundFile from '../assets/home/ground.webp';
+import printLandscapeFile from '../assets/home/green-print.webp';
+import printPortraitFile from '../assets/home/green-print-portrait.webp';
+import logo from '../assets/logo/otto.png';
+import { site } from '../data/site.js';
+import montage from '../assets/home/ottoke-montage-final.webp';
+import collection from '../assets/home/kolekcja-darta.webp';
+import eventosTile from '../assets/home/kafelki/eventos.webp';
+import horquillasTile from '../assets/home/kafelki/horquillas.webp';
+import norigaeTile from '../assets/home/kafelki/norigaes.webp';
+import kimchiTile from '../assets/home/kafelki/kimchi.webp';
+
+// Pictures come ready from _agent\narzedzia\homepage_claude.py: the torn edges are part of
+// each image. The pictures placed in the markup sit in src\assets\home, so each screen gets its own width;
+// backgrounds and Otto's frames sit in public\home.
+const explore = [
+  { name: 'Eventos', image: eventosTile, href: '/eventos/' },
+  { name: 'Horquillas', image: horquillasTile, href: '/horquillas/' },
+  { name: 'Norigae', image: norigaeTile, href: '/norigae/' },
+  { name: 'Kimchi', image: kimchiTile, href: '/kimchi/' },
+];
+
+// Who Ottoke is, for search engines. A collective with no venue of its own, so no street
+// address or opening hours: only what the footer shows (city, networks, WhatsApp).
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  alternateName: 'Ottoke Cultura Coreana',
+  url: new URL('/', Astro.site).href,
+  logo: new URL(logo.src, Astro.site).href,
+  slogan: 'Cultura que une, enseña y transforma.',
+  description: 'Colectivo de Medellín que acerca la cultura coreana con encuentros y productos hechos a mano.',
+  telephone: site.phone,
+  address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'CO' },
+  // no venue of its own, so no LocalBusiness: the area it serves instead (STATUS.md, 2026-11-03)
+  areaServed: { '@type': 'City', name: site.city, containedInPlace: { '@type': 'Country', name: 'Colombia' } },
+  founder: [{ '@type': 'Person', name: 'Ivonne' }, { '@type': 'Person', name: 'Ana María' }],
+  sameAs: [site.instagram, site.tiktok],
+};
+
+// The opening: the green sheet with the women is the largest picture of the first screen, so
+// each screen gets its own width of it; the paint ground under Otto is a texture, so a phone
+// gets a 1600 px copy of it.
+const printLandscape = await getImage({ src: printLandscapeFile, widths: [840, 1260, 1680] });
+const printPortrait = await getImage({ src: printPortraitFile, widths: [600, 900, 1183] });
+const ground = await getImage({ src: groundFile, width: 2400, quality: 72 });
+const groundPhone = await getImage({ src: groundFile, width: 1600, quality: 72 });
+
+// the dark texture under the film is soft, so 1600 px covers the section on any screen
+const filmGround = await getImage({ src: filmGroundFile, width: 1600, quality: 72 });
+
+// home-2.astro renders this page with v2: the same opening on a ground washed lighter.
+const { v2 = false } = Astro.props;
+---
+
+<Base
+  draft={v2}
+  title="Cultura coreana en Medellín: Corea, más cerca de ti | Ottoke"
+  description="Cultura coreana en Medellín, Colombia. Un puente cultural entre Colombia y Corea del Sur."
+  image="/og/norigae.jpg"
+  jsonLd={[organization]}
+>
+  <Header slot="header" />
+  <div class="home">
+    <section class:list={['hero', { 'hero--v2': v2 }]} aria-labelledby="hero-title" style={`--ground: url(${ground.src}); --ground-phone: url(${groundPhone.src})`}>
+      <div class="left">
+        <div class="mascot">
+          <img src="/home/otto/10.webp" width="800" height="1000" alt="Otto, el oso de Ottoke, en versión de peluche." />
+          <canvas width="800" height="1000" aria-hidden="true"></canvas>
+        </div>
+      </div>
+
+      <picture>
+        <source media="(max-width: 900px)" srcset={printPortrait.srcSet.attribute} sizes="100vw" width="1183" height="1449" />
+        <img class="print" src={printLandscape.src} srcset={printLandscape.srcSet.attribute} sizes="58vw" width="1680" height="1622" fetchpriority="high" alt="Tres mujeres sonríen en una selfie durante un taller de Ottoke; dos hacen el signo de la paz." />
+      </picture>
+
+      <div class="copy">
+        <div class="headline">
+          <h1 class="title" id="hero-title">Corea del Sur, <span>más cerca de ti</span></h1>
+          <span class="otto" aria-hidden="true"></span>
+        </div>
+        <p class="motto">Tu <span class="motto__heart" role="img" aria-label="amor"><svg viewBox="0 0 100 100" aria-hidden="true"><path transform="translate(-4 12) scale(.82)" d="M50 86C28 70 7 53 9 31C10 15 25 6 38 11C45 14 49 20 51 27C55 18 63 10 74 11C87 13 94 26 90 40C85 58 67 73 50 86Z" /><path transform="translate(62 -6) scale(.36) rotate(12 50 50)" d="M50 86C28 70 7 53 9 31C10 15 25 6 38 11C45 14 49 20 51 27C55 18 63 10 74 11C87 13 94 26 90 40C85 58 67 73 50 86Z" /></svg></span> por Corea tiene un lugar</p>
+      </div>
+      <a class="cta" href="#mundo">ENTRA A NUESTRO MUNDO</a>
+
+      <div class="grain"></div>
+    </section>
+
+    <figure class="collection-strip">
+      <Image src={montage} widths={[800, 1200, 1600, 2400, 3000]} sizes="100vw" alt="Collage de encuentros Ottoke con participantes, norigae, horquillas y kimchi" />
+    </figure>
+
+    <section class="explore" id="mundo" aria-labelledby="explore-title">
+      <h2 id="explore-title">Explora Ottoke</h2>
+      <!-- A section with no page yet stays a plain tile and becomes a link with its page. -->
+      <ul class="explore__categories">
+        {explore.map((tile) => {
+          const figure = (
+            <figure>
+              <Image src={tile.image} widths={[440, 660, 880]} sizes="(max-width: 760px) 49vw, 25vw" alt="" />
+              <figcaption>{tile.name}</figcaption>
+            </figure>
+          );
+          return <li>{tile.href ? <a href={tile.href}>{figure}</a> : figure}</li>;
+        })}
+      </ul>
+    </section>
+
+    <figure class="collection-strip collection-strip--products">
+      <Image src={collection} widths={[800, 1200, 1600, 2172]} sizes="100vw" alt="Tres pares de horquillas y norigae de Ottoke, con flores, un dragón, un pez y una mariposa sobre lino verde y crema." />
+    </figure>
+    <section class="film" aria-labelledby="film-title" style={`--film-ground: url(${filmGround.src})`}>
+      <div>
+        <h2 id="film-title">Un puente cultural entre Colombia y Corea del Sur</h2>
+        <p>Encuentros, cultura y nuevas amistades.</p>
+      </div>
+      <div class="film__print">
+        <FilmPlayer />
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  /* the torn sheets leave gaps the page shows through: here it is paper, not white */
+  :global(body:has(.home)) { background: var(--color-hueso); }
+
+  .home {
+    --shadow: rgb(30 36 22 / 0.34);
+    --header-h: 90px;
+    /* Scene unit: the scene is 100 x 56 units, which is what shows under the header on a
+       1440 x 900 screen. In a lower window the scale shrinks, but to 50 units of height at
+       most: the bottom of the scene then runs off the screen and the extra width stays left. */
+    --u: min(1vw, (100vh - var(--header-h)) / 50);
+    --scene-h: calc(56 * var(--u));
+    --hero-h: min(100vh - var(--header-h), var(--scene-h));
+    --tear-shadow: drop-shadow(calc(-0.35 * var(--u)) calc(0.3 * var(--u)) calc(0.7 * var(--u)) var(--shadow));
+  }
+
+  /* scene: the rest of the first screen */
+  .hero {
+    position: relative;
+    height: var(--hero-h);
+    overflow: hidden;
+    /* the ground keeps the scale of the scene, so its stains do not grow on wide screens */
+    background: var(--color-oliva) left top / auto var(--scene-h) no-repeat;
+    background-image: linear-gradient(rgb(195 206 148 / 0.35), rgb(195 206 148 / 0.35)), var(--ground);
+  }
+
+  /* left side: the peach Otto from Blender, centred */
+  .left {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(100% - 56 * var(--u)); /* up to the tear line of the sheet */
+  }
+  /* A still picture for everyone, with a canvas on top that plays frames of the film.
+     The frame has room above the head, so the bear's centre is at 61% of the picture. */
+  .mascot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(40 * var(--u));
+    aspect-ratio: 4 / 5;
+    translate: -50.5% -61%;
+    transform-origin: 50% 94%; /* the paws stand, the body breathes */
+    animation: breathe 5s ease-in-out infinite alternate;
+  }
+  .mascot img, .mascot canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .mascot.is-playing img { visibility: hidden; }
+  @keyframes breathe { to { scale: 1.012 1.025; } }
+
+  /* the sheet has two files: landscape torn on the left, portrait for phones torn at the bottom */
+  .hero picture { display: contents; }
+  .print {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+    max-width: none;
+    height: var(--scene-h);
+    filter: var(--tear-shadow);
+  }
+
+  .copy {
+    position: absolute;
+    right: calc(3.5 * var(--u));
+    top: calc(4.6 * var(--u));
+  }
+  .headline { display: flex; align-items: center; gap: calc(1.8 * var(--u)); }
+  .title {
+    font-family: var(--font-heading);
+    font-size: calc(5.4 * var(--u));
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    white-space: nowrap;
+    color: var(--color-hueso);
+  }
+  .title span { display: block; }
+  /* the drawing is the mask, so the bear takes the colour of the title */
+  .otto { height: calc(9.9 * var(--u)); aspect-ratio: 317 / 333; background: var(--color-hueso); mask: url('/home/otto-olive.png') center / contain no-repeat; }
+  /* The line under the title: thin capitals of a Korean face, so it stays light under the
+     heavy title. The heart stands for "amor" and hops when Otto winks. */
+  .motto {
+    margin-top: calc(1.9 * var(--u));
+    font-family: var(--font-note);
+    font-size: max(1.45 * var(--u), 13px);
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-hueso);
+  }
+  .motto__heart { display: inline-block; width: 1.9em; height: 1.9em; margin-inline: 0.05em; vertical-align: -0.55em; }
+  .motto__heart svg { display: block; width: 100%; height: 100%; overflow: visible; fill: var(--color-durazno); }
+  .hero.is-winking .motto__heart svg { animation: heart-hop 1.5s; }
+  @keyframes heart-hop {
+    14% { translate: 0 -55%; rotate: -10deg; }
+    28% { translate: 0 0; rotate: 8deg; }
+    40% { translate: 0 -35%; rotate: -8deg; }
+    52% { translate: 0 0; rotate: 6deg; }
+    64% { rotate: -6deg; }
+    76% { rotate: 5deg; }
+    88% { rotate: -3deg; }
+  }
+  /* the button stands under Otto, in the middle of the left side */
+  .cta {
+    position: absolute;
+    left: calc((100% - 56 * var(--u)) / 2);
+    top: calc(50% + 16.5 * var(--u));
+    display: inline-block;
+    translate: -50% 0;
+    padding: calc(1.05 * var(--u)) calc(1.8 * var(--u)) calc(1.15 * var(--u));
+    border-radius: var(--radius-soft);
+    font-family: var(--font-heading);
+    font-size: max(1.25 * var(--u), 14px);
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--color-ink);
+    background: var(--color-durazno);
+    rotate: -1.5deg;
+    box-shadow: 0 calc(0.3 * var(--u)) calc(0.7 * var(--u)) var(--shadow);
+    transition: background-color 0.15s, rotate 0.15s;
+  }
+  .cta:hover { background: var(--color-hueso); rotate: 0deg; }
+  .cta:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 4px; }
+
+  /* paper grain over the whole scene */
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+    opacity: 0.18;
+  }
+
+  /* Version 2 of the opening: the same paint ground, washed halfway from light green to the
+     bone paper (the client's choice, Doc 2026-10-29: "entre verde ligero y blanco"). */
+  .hero--v2 { --wash: linear-gradient(rgb(244 241 232 / 0.5), rgb(244 241 232 / 0.5)); }
+  .hero.hero--v2 { background-image: var(--wash), linear-gradient(rgb(195 206 148 / 0.35), rgb(195 206 148 / 0.35)), var(--ground); }
+
+  /* Phone and portrait screen, the same 900px at which the header folds: one column,
+     sizes in hundredths of the width. The portrait sheet (title on green, the women in
+     full, torn at the bottom), Otto under it, the button under Otto. */
+  @media (max-width: 900px) {
+    .home { --u: 1vw; }
+    .hero {
+      display: grid;
+      justify-items: center;
+      height: auto;
+      padding-bottom: calc(9 * var(--u));
+      background-position: center bottom;
+      background-size: calc(240 * var(--u)) auto;
+    }
+    .hero { background-image: linear-gradient(rgb(195 206 148 / 0.35), rgb(195 206 148 / 0.35)), var(--ground-phone); }
+    .hero.hero--v2 { background-image: var(--wash), linear-gradient(rgb(195 206 148 / 0.35), rgb(195 206 148 / 0.35)), var(--ground-phone); }
+    .copy { display: contents; }
+    .print {
+      position: static;
+      grid-area: 1 / 1;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 calc(0.8 * var(--u)) calc(1.4 * var(--u)) var(--shadow));
+    }
+    /* the sheet has a filter, so the title is positioned to lie above it */
+    .headline {
+      position: relative;
+      z-index: 1;
+      grid-area: 1 / 1;
+      place-self: start;
+      gap: calc(3.2 * var(--u));
+      /* the header paper overlaps the scene by up to 23px: the title starts clearly under it,
+         level with the left edge of the photo */
+      margin: calc(14 * var(--u)) 0 0 calc(7 * var(--u));
+    }
+    .title { font-size: calc(9.6 * var(--u)); }
+    .otto { height: calc(17.6 * var(--u)); }
+    /* the empty room above the bear's head overlaps the sheet, the ears stay under the tear */
+    .left { position: static; grid-area: 2 / 1; width: auto; margin-top: calc(-30 * var(--u)); }
+    .mascot { position: relative; left: auto; top: auto; width: calc(86 * var(--u)); translate: none; }
+    /* between the title and the heads of the women on the sheet */
+    .motto {
+      position: relative;
+      z-index: 1;
+      grid-area: 1 / 1;
+      place-self: start;
+      margin: calc(35 * var(--u)) 0 0 calc(7 * var(--u));
+      font-size: calc(3.5 * var(--u));
+    }
+    .cta {
+      position: static;
+      grid-area: 3 / 1;
+      translate: none;
+      margin-top: calc(-3 * var(--u));
+      padding: max(3.4 * var(--u), 14px) calc(5.8 * var(--u));
+      font-size: max(3.7 * var(--u), 14px);
+      box-shadow: 0 calc(0.8 * var(--u)) calc(1.6 * var(--u)) var(--shadow);
+    }  }
+
+  /* The photo and the tiles carry the tear of the sheet in the image itself and, like the
+     sheet, overlap what lies next to them by the band the tear runs in. */
+  .collection-strip { position: relative; margin: -1.4% 0 0; }
+  .collection-strip img { width: 100%; filter: var(--tear-shadow); }
+  .collection-strip--products { margin-top: 0; }
+
+  .explore { padding-bottom: clamp(48px, 6vw, 96px); background: var(--color-hueso); scroll-margin-top: 24px; }
+  .explore h2 {
+    display: grid;
+    place-items: center;
+    padding: clamp(32px, 4vw, 64px) var(--gutter);
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: clamp(32px, 3.4vw, 52px);
+    font-weight: 800; /* the same cut as the title of the opening */
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+  /* Four sheets of the same weight, side by side: none lies on its neighbour. The torn band
+     of each image is its own margin, so the paper of the page shows between them. Below
+     them the section leaves air and the film starts on its own. */
+  .explore__categories {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5vw;
+    margin: 0;
+    padding: 0 0.75vw;
+    list-style: none;
+  }
+  .explore__categories li { position: relative; }
+  .explore__categories a { display: block; text-decoration: none; }
+  .explore__categories a:focus-visible { outline: 3px solid currentColor; outline-offset: -12px; }
+  .explore__categories figure { position: relative; margin: 0; transition: transform 0.5s; }
+  .explore__categories li:focus-within { z-index: 2; }
+  .explore__categories a:focus-visible figure { transform: scale(1.025); }
+  @media (hover: hover) and (pointer: fine) {
+    .explore__categories li:hover { z-index: 2; }
+    .explore__categories li:hover figure { transform: scale(1.025); }
+  }
+  /* the shadow falls straight down, the same under every tile */
+  .explore__categories img { width: 100%; filter: drop-shadow(0 calc(0.25 * var(--u)) calc(0.6 * var(--u)) var(--shadow)); }
+  /* The caption lies on the band that is part of the image: its centre is 13.24% above the
+     bottom. It is set as the site's label (the footer headings, the tabs of a product page),
+     so a tile reads as navigation and the drawing stays the main thing. */
+  .explore__categories figcaption {
+    position: absolute;
+    inset: auto 0 13.24%;
+    translate: 0 50%;
+    text-align: center;
+    font-size: clamp(12px, 1.05vw, 16px);
+    font-weight: var(--weight-strong);
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .explore__categories li:nth-child(4) { color: var(--color-hueso); }
+
+  /* The dark texture of the sheet from the opening; the film lies on it as a print torn on
+     four sides. Top and bottom are torn with one outline, the top one is its mirror image. */
+  .film {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 72px);
+    margin: 0 0 calc(-1 * var(--tear-overlap));
+    padding: clamp(80px, 9vw, 140px) clamp(24px, 5vw, 96px) clamp(64px, 7vw, 112px);
+    color: var(--color-hueso);
+    background: var(--color-ink) var(--film-ground) center / cover;
+    mask-image: url('../assets/tear/tear-mask-top.png'), linear-gradient(black, black), url('../assets/tear/tear-mask.png');
+    mask-size: 100% var(--tear-band), 100% calc(100% - 2 * var(--tear-band) + 2px), 100% var(--tear-band);
+    mask-position: top, 0 calc(var(--tear-band) - 1px), bottom;
+    mask-repeat: no-repeat;
+  }
+  .film::before,
+  .film::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: var(--tear-band);
+    background: url('../assets/tear/tear-rim.png') bottom / 100% 100% no-repeat;
+    pointer-events: none;
+  }
+  .film::before { inset: 0 0 auto; scale: 1 -1; }
+  .film h2 { font-family: var(--font-heading); font-size: clamp(36px, 4.4vw, 76px); font-weight: 800; line-height: 0.95; letter-spacing: -0.035em; text-wrap: wrap; }
+  .film p { max-width: 28ch; margin-top: 1.4em; font-size: clamp(16px, 1.35vw, 21px); line-height: 1.45; }
+  /* the 3% frame is the band of the print saved in film-papier.webp: the tear and the white rim */
+  .film__print { padding: 3%; background: url('/home/film-papier.webp') center / 100% 100% no-repeat; filter: var(--tear-shadow); }
+
+  @media (max-width: 760px) {
+    .explore__categories { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1vw; padding-inline: 1.5vw; }
+    .film { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 72px 16px 56px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta, .explore__categories figure { transition: none; }
+    .mascot { animation: none; }
+    .explore__categories li:hover figure, .explore__categories a:focus-visible figure { transform: none; }
+  }
+</style>
+
+<script>
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Otto plays a loop made of ready frames of the film (Motion\film3d): pairs of
+  // [picture number, how many frames of 1/24 s]. Long rests and short gestures: he turns to
+  // the middle and looks up, blinks, winks with a paw, glances left and comes back to the
+  // pose he starts in, looking towards the title.
+  const mascot = document.querySelector<HTMLElement>('.mascot');
+  const pen = mascot?.querySelector('canvas')?.getContext('2d');
+  // The 28 frames weigh about 1.7 MB: they load only after the page has, and not at all when
+  // the visitor asked to save data. Until they play, the still picture stands.
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  if (mascot && pen && !still && !saveData) {
+    if (document.readyState === 'complete') setTimeout(play, 300);
+    else addEventListener('load', () => setTimeout(play, 300), { once: true });
+  }
+  function play() {
+    const CYCLE = [
+      [10, 96], [11, 2], [12, 2], [13, 2], [14, 2], [15, 24], [16, 4], [15, 10],
+      [17, 2], [18, 2], [19, 2], [20, 2], [21, 2], [22, 34], [23, 2], [24, 2], [25, 2], [26, 2], [27, 38],
+      [0, 2], [1, 2], [2, 2], [3, 22], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2], [9, 2],
+    ];
+    const pictures = Array.from({ length: 28 }, (_, number) =>
+      Object.assign(new Image(), { src: `/home/otto/${String(number).padStart(2, '0')}.webp` }));
+    Promise.all(pictures.map((picture) => picture.decode()))
+      .then(() => {
+        mascot.classList.add('is-playing');
+        const hero = mascot.closest('.hero');
+        let step = 0;
+        (function show() {
+          const [picture, frames] = CYCLE[step];
+          hero.classList.toggle('is-winking', picture >= 22); // the wink and the glance after it
+          pen.clearRect(0, 0, 800, 1000);
+          pen.drawImage(pictures[picture], 0, 0);
+          step = (step + 1) % CYCLE.length;
+          setTimeout(show, (frames * 1000) / 24);
+        })();
+      })
+      .catch((error) => console.error('Otto: the frames did not load, the still picture stays.', error));
+  }
+
+</script>

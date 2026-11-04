@@ -1,0 +1,700 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import { site, whatsapp } from '../../data/site.js';
+import { proximo, pasados } from '../../data/eventos.js';
+import { stage } from '../../scripts/eventos.js';
+
+// sin-fecha.astro renders this page as it is on a day with no event announced
+const { sinFecha = false } = Astro.props;
+const now = !sinFecha && proximo ? stage(proximo) : 'past';
+const evento = now === 'past' ? null : proximo;
+// open: sign-up; closed: the event still shows, sign-up gives way to "tell me about the next"
+const state = { open: undefined, closed: 'closed', past: 'waiting' }[now];
+
+// Intl writes "3:00 p. m." with no-break spaces: plain ones go to the page
+const format = (date, options) =>
+  new Intl.DateTimeFormat('es-CO', { timeZone: 'America/Bogota', ...options }).format(new Date(date)).replace(/\s/g, ' ');
+const dayMonth = { day: 'numeric', month: 'long' };
+const clock = { hour: 'numeric', minute: '2-digit' };
+// "21 nov" for the bar: Intl has no such form, and some versions of it end the month with a dot
+const short = (date) => `${format(date, { day: 'numeric' })} ${format(date, { month: 'short' }).replace('.', '')}`;
+
+const signUp = evento && whatsapp(`Hola Ottoke, quiero un cupo para ${evento.name} del ${format(evento.starts, dayMonth)}.`);
+const notify = whatsapp('Hola Ottoke, quiero saber cuándo será el próximo evento.');
+const outside = { target: '_blank', rel: 'noopener noreferrer' };
+
+// Line drawings in the hand of the kimchi page, on a 24 px grid: the calendar and the pin
+// are the ones from there, the clock and the ticket are drawn to match.
+const facts = evento && [
+  {
+    label: 'Fecha',
+    value: format(evento.starts, { weekday: 'long', ...dayMonth, year: 'numeric' }),
+    icon: 'M5 6h14v14H5zM5 10.500h14M9 3.500v4M15 3.500v4',
+  },
+  {
+    label: 'Hora',
+    value: `${format(evento.starts, clock)} a ${format(evento.ends, clock)}`,
+    whole: true, // "p. m." stays in one piece
+    icon: 'M12 3.500a8.500 8.500 0 1 0 0 17 8.500 8.500 0 0 0 0-17zM12 7.500V12l3 2',
+  },
+  {
+    label: 'Lugar',
+    value: evento.place,
+    note: evento.placeNote,
+    icon: 'M12 21s-6.500-5.700-6.500-11a6.500 6.500 0 0 1 13 0c0 5.300-6.500 11-6.500 11zM12 12.500a2.500 2.500 0 1 0 0-5 2.500 2.500 0 0 0 0 5z',
+  },
+  evento.price && {
+    label: 'Precio',
+    value: evento.price.display,
+    note: 'Por persona.',
+    icon: 'M4 7.500h16v3a1.500 1.500 0 0 0 0 3v3H4v-3a1.500 1.500 0 0 0 0-3zM14.500 7.500v2M14.500 11v2M14.500 14.500v2',
+  },
+].filter(Boolean);
+
+// an invented event stays out of the structured data
+const jsonLd = evento && !evento.sample
+  ? [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Event',
+        name: `${evento.name}. ${evento.theme}`,
+        description: evento.lead,
+        startDate: evento.starts,
+        endDate: evento.ends,
+        // the console's "Estado": a moved event keeps its page and says so to Google
+        eventStatus: `https://schema.org/${evento.estado === 'aplazado' ? 'EventRescheduled' : 'EventScheduled'}`,
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        location: { '@type': 'Place', name: evento.place, address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'CO' } },
+        image: new URL('/og/eventos.jpg', Astro.site).href,
+        organizer: { '@type': 'Organization', name: site.name, url: Astro.site.href },
+        offers: evento.price && {
+          '@type': 'Offer',
+          price: evento.price.value,
+          priceCurrency: evento.price.currency,
+          availability: now === 'open' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+          validThrough: evento.deadline,
+          url: new URL(Astro.url.pathname, Astro.site).href,
+        },
+      },
+    ]
+  : [];
+---
+
+<Base
+  draft={sinFecha}
+  title={`Eventos de cultura coreana en ${site.city} | Ottoke`}
+  description={`Los eventos de Ottoke en ${site.city}: comida, historia y nuevas amistades alrededor de la cultura coreana. Fechas y cupos por WhatsApp.`}
+  image="/og/eventos.jpg"
+  jsonLd={jsonLd}
+>
+  <Header slot="header" />
+  <div class="events" data-state={state} data-starts={evento?.starts} data-ends={evento?.ends} data-deadline={evento?.deadline} data-full={evento?.full ? '' : undefined}>
+    <div class="bar">
+      <div>
+        <h1 id="proximo">Próximo evento</h1>
+        {
+          evento && (
+            <p data-only="next">
+              <time datetime={evento.starts}>{short(evento.starts)}</time>. <span data-countdown />
+            </p>
+          )
+        }
+      </div>
+      {evento && <a class="cta" data-only="open" href={signUp} {...outside}>Quiero mi cupo</a>}
+      {evento && <a class="cta" data-only="closed" href={notify} {...outside}>Avísame</a>}
+      <a class="cta" data-only="waiting" href={notify} {...outside}>Avísame</a>
+    </div>
+
+    <div class="sheet">
+      <div class="sheet__top">
+      {
+        evento && (
+          <div class="poster" data-only="next">
+            <p class="poster__small">{evento.edition}</p>
+            <h2 class="poster__name">
+              <span>{evento.poster[0]}</span>
+              <i class="poster__otto" />
+              <span>{evento.poster[1]}</span>
+            </h2>
+            <p class="poster__small"><time datetime={evento.starts}>{format(evento.starts, { weekday: 'long', ...dayMonth })}</time></p>
+            <p class="sticker" data-only="open">{evento.estado === 'aplazado' ? 'Nueva fecha' : evento.seats ? <>Solo <b>{evento.seats}</b> cupos</> : 'Cupos limitados'}</p>
+            <p class="sticker" data-only="closed">{evento.full ? 'Agotado' : 'Cerrado'}</p>
+          </div>
+        )
+      }
+      <div class="poster" data-only="waiting">
+        <p class="poster__name">
+          <span>Nueva fecha</span>
+          <i class="poster__otto" />
+          <span>por anunciar</span>
+        </p>
+      </div>
+
+      {
+        evento && (
+          <div class="info" data-only="next">
+            <ul class="facts">
+              {
+                facts.map((fact) => (
+                  <li>
+                    <svg viewBox="0 0 24 24" width="45" height="45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={fact.icon} /></svg>
+                    <p>
+                      <span class="facts__label">{fact.label}</span>
+                      <span class:list={['facts__value', { whole: fact.whole }]}>{fact.value}</span>
+                      {fact.note && <small>{fact.note}</small>}
+                    </p>
+                  </li>
+                ))
+              }
+            </ul>
+            <div class="info__act" data-only="open">
+              <a class="cta cta--big" href={signUp} {...outside}>
+                Quiero mi cupo
+                <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M2 3h12v8H7l-3 3v-3H2z" /></svg>
+              </a>
+              <p>Inscripciones hasta el {format(evento.deadline, dayMonth)}.</p>
+              {evento.deposit && <p>{evento.deposit}</p>}
+            </div>
+            <div class="info__act" data-only="closed">
+              <a class="cta cta--big" href={notify} {...outside}>
+                Avísame del próximo
+                <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M2 3h12v8H7l-3 3v-3H2z" /></svg>
+              </a>
+              <p>{evento.full ? 'Ya no quedan cupos.' : `Las inscripciones cerraron el ${format(evento.deadline, dayMonth)}.`}</p>
+            </div>
+            <div class="note">
+              <h3>{evento.theme}</h3>
+              <p>{evento.lead}</p>
+              <p>{evento.includes}</p>
+            </div>
+          </div>
+        )
+      }
+      <div class="info info--alone" data-only="waiting">
+        <p>Todavía no hay fecha para el próximo evento. Escríbenos y te avisamos apenas abramos cupos.</p>
+        <a class="cta cta--big" href={notify} {...outside}>
+          Avísame del próximo
+          <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M2 3h12v8H7l-3 3v-3H2z" /></svg>
+        </a>
+      </div>
+      </div>
+      {
+        evento?.photos && (
+          <ul class="strip" data-only="next" tabindex="0" aria-label="Fotos de una tarde de Ottoke">
+            {evento.photos.map((photo) => (
+              <li>
+                <Image src={photo.src} alt={photo.alt} widths={[400, 800, 1200]} sizes="(min-width: 720px) 31vw, 72vw" format="webp" loading="lazy" />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <section class="past" aria-labelledby="anteriores">
+      <div class="wrap">
+        <h2 id="anteriores"><mark>Eventos anteriores</mark></h2>
+        {
+          pasados.map((pasado) => (
+            <article class="memory">
+              <div class="memory__card">
+                <Image src={pasado.card.src} alt={pasado.card.alt} widths={[800, 1200, 1600, 2400]} sizes="(min-width: 960px) 46vw, 94vw" format="webp" loading="lazy" />
+              </div>
+              <div class="memory__text">
+                <div>
+                  <h3>{pasado.name}</h3>
+                  <p>{pasado.edition}, {pasado.when}</p>
+                  <p>{pasado.place}</p>
+                </div>
+                <div class="stack">
+                  {pasado.text.map((paragraph) => <p>{paragraph}</p>)}
+                </div>
+              </div>
+              <ul class="memory__photos">
+                {
+                  pasado.photos.map((photo) => (
+                    <li class:list={{ 'is-wide': photo.wide }}>
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        widths={photo.wide ? [800, 1200, 1600] : [400, 800]}
+                        sizes={photo.wide ? '(min-width: 720px) 48vw, 94vw' : '(min-width: 720px) 24vw, 46vw'}
+                        format="webp"
+                        loading="lazy"
+                      />
+                    </li>
+                  ))
+                }
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  /* Two sheets: what is coming lies on the paper of the header, with the poster and the way
+     in; what has been is plain paper with photos. A stacking context under the header keeps
+     its torn edge above the bar. */
+  .events {
+    --shadow: rgb(30 36 22 / 0.34);
+    position: relative;
+    z-index: 0;
+  }
+  .events[data-state='waiting'] [data-only='next'],
+  .events:not([data-state='waiting']) [data-only='waiting'],
+  .events[data-state] [data-only='open'],
+  .events:not([data-state='closed']) [data-only='closed'] {
+    display: none;
+  }
+
+  /* After the Pictoplasma event page: what the block is on the left, the way in on the
+     right, and both follow you down the page. The bar starts under the torn edge of the
+     header and sticks with that part of it out of view. */
+  .bar {
+    position: sticky;
+    top: calc(-1 * var(--tear-overlap));
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: calc(var(--tear-overlap) + var(--space-3)) var(--gutter) var(--space-3);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-page);
+  }
+  .bar h1 {
+    font-size: var(--text-body);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .bar p {
+    font-size: var(--text-label);
+    color: var(--color-ink-soft);
+  }
+  .bar .cta { padding-inline: var(--space-3); }
+
+  /* the button of the homepage: durazno is the colour of the one thing to do */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-soft);
+    font-family: var(--font-heading);
+    font-size: var(--text-label);
+    font-weight: var(--weight-heading);
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-ink);
+    background: var(--color-durazno);
+    transition: background-color var(--dur) var(--ease);
+  }
+  .cta:hover { background: var(--color-oliva); }
+  .cta:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 3px; }
+  .cta svg { fill: none; stroke: currentColor; stroke-width: 1.2; }
+  /* the large one may take two lines on the narrowest phones */
+  .cta--big {
+    min-height: 3.75rem;
+    padding-inline: var(--space-5);
+    font-size: var(--text-lead);
+    text-align: center;
+    white-space: normal;
+  }
+
+  .sheet {
+    /* Poster unit, the size of the letters of the name: on a phone as large as lets
+       "EN LA MESA" fit across. A longer line breaks at its spaces. */
+    --x: clamp(2.75rem, 14.8vw, 11rem);
+    position: relative;
+    isolation: isolate;
+    padding-bottom: var(--space-section);
+    color: var(--color-ink);
+  }
+  /* the sheet is the paper of the header, peach to olive, and ends in the same torn edge,
+     overlapping the paper below by the same band */
+  .sheet::before,
+  .sheet::after {
+    content: '';
+    position: absolute;
+    /* a pixel under the bar, so no line of paper shows between the two */
+    inset: -1px 0 calc(-1 * var(--tear-overlap));
+    z-index: -1;
+    pointer-events: none;
+  }
+  .sheet::before {
+    background: linear-gradient(105deg,
+      color-mix(in oklab, var(--color-durazno) 35%, var(--color-hueso)),
+      var(--color-hueso) 48%,
+      color-mix(in oklab, var(--color-oliva) 35%, var(--color-hueso)));
+    mask-image: linear-gradient(black, black), url('../../assets/tear/tear-mask.png');
+    mask-size: 100% calc(100% - var(--tear-band) + 1px), 100% var(--tear-band);
+    mask-position: top, bottom;
+    mask-repeat: no-repeat;
+  }
+  .sheet::after { background: url('../../assets/tear/tear-rim.png') bottom / 100% var(--tear-band) no-repeat; }
+
+  /* After the Pictoplasma poster: one flat colour, the edition, the name in two lines
+     with the mark between them, the date, and nothing else. */
+  .poster {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    padding: calc(0.6 * var(--x)) var(--gutter) calc(0.75 * var(--x));
+    text-align: center;
+    color: var(--color-ink);
+  }
+  /* on a phone the sticker takes the corner above the name */
+  .poster:has(.sticker) { padding-top: calc(1.05 * var(--x)); }
+  .poster__small {
+    font-family: var(--font-heading);
+    font-size: max(0.24 * var(--x), var(--text-label));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-tight);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .poster__name {
+    display: grid;
+    justify-items: center;
+    margin-block: calc(0.14 * var(--x)) calc(0.22 * var(--x));
+    font-family: var(--font-heading);
+    font-size: var(--x);
+    font-weight: 800;
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+  /* the drawing is the mask, so Otto takes the ink of the name */
+  .poster__otto {
+    height: 0.95em;
+    aspect-ratio: 317 / 333;
+    margin-block: 0.07em 0.02em;
+    background: currentColor;
+    mask: url('/home/otto-olive.png') center / contain no-repeat;
+  }
+  /* printed in two passes, like a riso poster: the peach plate lands a little off the ink one.
+     On the name it is a filter, so Otto gets it too: a mask would cut a shadow of his own */
+  .poster__name {
+    filter: drop-shadow(0.045em 0.045em 0 var(--color-durazno));
+  }
+  .poster__small {
+    text-shadow: 0.045em 0.045em 0 var(--color-durazno);
+  }
+  /* The round sticker of their poster: the one fact that hurries you, said once. */
+  .sticker {
+    position: absolute;
+    top: calc(0.12 * var(--x));
+    right: var(--gutter);
+    display: grid;
+    place-content: center;
+    width: max(1.35 * var(--x), 5rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    font-family: var(--font-heading);
+    font-size: max(0.19 * var(--x), 0.75rem);
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    background: var(--color-oliva);
+    rotate: 9deg;
+  }
+  .sticker b { display: block; font-size: 2.6em; line-height: 0.9; }
+
+  /* What you need to decide, the button, and the story of this event on its own sheet. */
+  .info {
+    display: grid;
+    gap: var(--space-6);
+    width: min(100% - 2 * var(--gutter), 44rem);
+    margin-inline: auto;
+  }
+  /* with no event there is one sentence and the button */
+  .info--alone { justify-items: center; font-size: var(--text-lead); text-align: center; }
+
+  /* a drawing beside each fact, as beside each trait of the kimchi */
+  .facts {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .facts li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: center;
+  }
+  /* the drawing on a peach disc, the plate of the poster */
+  .facts svg {
+    box-sizing: content-box;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: var(--space-2);
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--color-durazno) 55%, var(--color-hueso));
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+  }
+  /* label and value in the letters of the poster: the small line and a bold one */
+  .facts__label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--text-label);
+    font-weight: var(--weight-heading);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+  .facts__value {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-heading);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .facts__value::first-letter { text-transform: uppercase; }
+  .facts__value.whole { white-space: nowrap; }
+  .facts small { display: block; margin-top: var(--space-1); font-size: var(--text-label); color: var(--color-ink-soft); }
+
+  /* the button takes the whole column, its drawing at the far end, as on the kimchi page */
+  .info__act .cta { display: flex; justify-content: space-between; }
+  .info__act p { margin-top: var(--space-3); font-size: var(--text-label); }
+
+  /* The story lies on a sheet of the paint of the homepage, lightened so the text reads:
+     a note left on the poster. The sheet is a little askew, the text on it stays level. */
+  .note {
+    --veil: color-mix(in oklab, var(--color-hueso) 58%, transparent);
+    position: relative;
+    isolation: isolate;
+    padding: var(--space-5);
+    color: var(--color-ink);
+  }
+  .note::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: var(--radius-soft);
+    background: linear-gradient(var(--veil), var(--veil)), url('/eventos/farba.webp') center / cover;
+    box-shadow: 0 var(--space-2) var(--space-5) var(--shadow);
+    rotate: -1deg;
+  }
+  .note h3,
+  .memory h3 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: 800;
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+  }
+  .note h3 { text-wrap: balance; }
+  .note p { margin-top: var(--space-3); }
+
+  /* the afternoon in pictures along the bottom of the sheet; on a phone a row to swipe */
+  .strip {
+    display: flex;
+    gap: var(--space-3);
+    margin: var(--space-6) 0 0;
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    list-style: none;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .strip li {
+    flex: none;
+    width: 72%;
+    scroll-snap-align: center;
+  }
+  .strip img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-soft);
+    object-fit: cover;
+    box-shadow: 0 var(--space-2) var(--space-5) var(--shadow);
+  }
+
+  .past { padding-block: var(--space-section); }
+  .past h2 {
+    margin-bottom: var(--space-6);
+    font-size: clamp(2.25rem, 1rem + 6vw, 5.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  /* the marker stroke of the kimchi and nosotras pages, in the colours that drift behind
+     the footer; on a phone each of the two lines gets its own */
+  .past mark {
+    padding: 0 0.12em;
+    border-radius: var(--radius-soft);
+    color: inherit;
+    background: linear-gradient(100deg, var(--color-durazno), var(--color-hueso), var(--color-oliva));
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .memory + .memory { margin-top: var(--space-section); }
+
+  /* After the Pictoplasma Academy page: one photo seen through the colour of the brand,
+     with the logo on it. The file is the plain photo; the tint and the logo are drawn here. */
+  .memory__card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-soft);
+  }
+  .memory__card img { width: 100%; height: 100%; object-fit: cover; }
+  .memory__card::before,
+  .memory__card::after {
+    content: '';
+    position: absolute;
+  }
+  /* the lightest green on which the logo still stands out from white rice (3.2 to 1) */
+  .memory__card::before {
+    inset: 0;
+    background: color-mix(in oklab, var(--color-ink-soft) 65%, var(--color-oliva));
+    mix-blend-mode: multiply;
+  }
+  .memory__card::after {
+    inset: 14% 0;
+    background: var(--color-hueso);
+    mask: url('../../assets/logo/otto.png') center / contain no-repeat;
+  }
+
+  .memory__text {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+  }
+  .memory__text .stack { max-width: var(--measure); font-size: var(--text-lead); }
+  .memory h3 { margin-block: var(--space-1) var(--space-3); }
+
+  .memory__photos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .memory__photos img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-soft);
+    object-fit: cover;
+  }
+  .memory__photos .is-wide { grid-column: 1 / -1; }
+  .memory__photos .is-wide img { aspect-ratio: 8 / 5; }
+
+  @media (min-width: 720px) {
+    /* no larger than lets the whole poster show under the header and the bar */
+    .sheet { --x: clamp(2.75rem, min(13vw, (100svh - 12rem) / 4.9), 11rem); }
+    .poster,
+    .poster:has(.sticker) { padding-block: calc(0.5 * var(--x)) calc(0.6 * var(--x)); }
+    /* beside the name, on its last letter, and never past the edge */
+    .sticker {
+      top: calc(0.05 * var(--x));
+      right: auto;
+      left: min(50% + 2.4 * var(--x), 100% - 1.35 * var(--x) - var(--gutter));
+    }
+    .bar h1 { font-size: var(--text-lead); }
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .memory__card { aspect-ratio: 2 / 1; }
+    .memory__text { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-7); }
+    /* two portraits and the group photo, all as tall as the portraits */
+    .memory__photos { grid-template-columns: 1fr 1fr 2fr; }
+    .memory__photos .is-wide { position: relative; grid-column: auto; }
+    .memory__photos .is-wide img { position: absolute; inset: 0; aspect-ratio: auto; }
+    .strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: visible;
+    }
+    .strip li { width: auto; }
+  }
+
+  /* On a laptop, as on the kimchi page: the picture on the left, and beside it a column
+     with what you need to decide. The poster is as large as its column lets the sticker
+     sit on the last letter of the name, and no taller than the screen under the bar. */
+  @media (min-width: 960px) {
+    .sheet {
+      --side: clamp(23rem, 38vw, 31.25rem);
+      --x: clamp(2.75rem, min((100vw - var(--side)) / 7.9, (100svh - 12rem) / 4.9), 11rem);
+      padding-bottom: var(--space-7);
+    }
+    /* its own box, so the sticky poster stops above the photo strip */
+    .sheet__top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--side);
+      align-items: start;
+    }
+    /* The poster fills the screen under the header and the bar, its lines in the middle,
+       and stays there while a longer column scrolls beside it. Its lines are 3.65 units tall. */
+    .poster,
+    .poster:has(.sticker) {
+      --pad: max(0.5 * var(--x), (100svh - 11.5rem - 3.65 * var(--x)) / 2);
+      position: sticky;
+      top: 4.25rem;
+      padding-block: var(--pad);
+    }
+    .sticker { top: calc(var(--pad) - 0.45 * var(--x)); }
+    .info {
+      gap: var(--space-5);
+      width: auto;
+      margin: 0;
+      padding: var(--space-5) var(--space-6) var(--space-5) var(--space-5);
+    }
+    .info--alone { align-self: center; }
+    .facts { grid-template-columns: minmax(0, 1fr); }
+
+    /* a past event in halves: the card on the left, its story beside it, the photos under both */
+    .memory {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 var(--space-7);
+      align-items: center;
+    }
+    .memory__card { aspect-ratio: 4 / 3; }
+    .memory__text { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .memory__photos { grid-column: 1 / -1; margin-top: var(--space-6); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta { transition: none; }
+  }
+</style>
+
+<script>
+  import { countdown, stage } from '../../scripts/eventos.js';
+
+  // The page is built once and read for months: before the event it counts the days, after
+  // the sign-up deadline it stops taking sign-ups, and after the event it gives way to
+  // "tell me about the next one".
+  const page = document.querySelector<HTMLElement>('.events[data-ends]');
+  if (page) {
+    const { starts, ends, deadline } = page.dataset;
+    const now = stage({ ends, deadline, full: 'full' in page.dataset });
+    if (now === 'past') page.dataset.state = 'waiting';
+    else {
+      if (now === 'closed') page.dataset.state = 'closed';
+      page.querySelector('[data-countdown]').textContent = countdown(starts);
+    }
+  }
+</script>

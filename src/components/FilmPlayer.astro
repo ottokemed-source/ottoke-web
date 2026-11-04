@@ -1,0 +1,112 @@
+<div class="film-player" data-film-player>
+  <video width="1280" height="720" playsinline preload="none" aria-label="Película de Ottoke" tabindex="-1"></video>
+  <button class="cover" type="button" aria-label="Ver película de Ottoke con sonido">
+    <img src="/home/ottoke-film-cover.webp" width="960" height="540" loading="lazy" decoding="async" alt="Otto junto a fotografías de un taller de cocina coreana" />
+    <span class="invitation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor" /></svg>Ver película <small>20 s</small></span>
+  </button>
+  <div class="controls" hidden>
+    <button type="button" data-toggle aria-label="Pausar">Pausa</button>
+    <input type="range" min="0" max="20" step="0.1" value="0" aria-label="Posición del video" />
+    <span class="time">0:00</span>
+    <button type="button" data-mute aria-label="Silenciar sonido">Sonido</button>
+    <button type="button" data-full aria-label="Pantalla completa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5" /></svg></button>
+  </div>
+  <p class="status" role="status" hidden></p>
+  <noscript><a href="/home/ottoke-film.mp4">Ver película de Ottoke</a></noscript>
+</div>
+
+<style>
+  .film-player{position:relative;aspect-ratio:16/9;background:var(--color-ink,#3E4A2B);color:#F4F1E8;isolation:isolate}
+  video,.cover,.cover img{display:block;width:100%;height:100%;object-fit:cover}
+  video{position:absolute;inset:0}
+  button{font:inherit;color:inherit;cursor:pointer;border:0}
+  .cover{position:absolute;inset:0;padding:0;background:transparent}
+  .invitation{position:absolute;left:50%;top:50%;translate:-50% -50%;display:flex;align-items:center;gap:12px;white-space:nowrap;padding:16px 24px;background:#F4F1E8;color:#3E4A2B;border-radius:999px;box-shadow:-4px 8px 24px #18200f40;font-weight:600;transition:transform .2s ease-out}
+  .cover:hover .invitation{transform:scale(1.04)}
+  small{font-size:max(.75em,12px);opacity:.8;margin-left:6px}
+  svg{width:24px;height:24px;flex:none}
+  .controls{position:absolute;inset:auto 0 0;display:flex;align-items:center;gap:8px;padding:8px 12px;background:#26301fee;font-size:13px;opacity:0;transition:opacity .2s}
+  .film-player:hover .controls,.film-player:focus-within .controls,.film-player.paused .controls{opacity:1}
+  .controls button{display:flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:4px 8px;background:transparent;border-radius:5px}
+  .controls button:hover{background:#ffffff18}
+  .controls svg{fill:none;stroke:currentColor;stroke-width:1.7}
+  input{--track:linear-gradient(90deg,var(--color-oliva) var(--played,0%),color-mix(in oklab,var(--color-hueso) 35%,transparent) 0);min-width:24px;flex:1;width:100%;height:44px;appearance:none;background:transparent;cursor:pointer}
+  input::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--track)}
+  input::-moz-range-track{height:4px;border-radius:2px;background:var(--track)}
+  input::-webkit-slider-thumb{appearance:none;width:16px;height:16px;margin-top:-6px;border-radius:50%;background:var(--color-hueso)}
+  input::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:50%;background:var(--color-hueso)}
+  .time{font-variant-numeric:tabular-nums;font-size:12px}
+  button:focus-visible,input:focus-visible{outline:3px solid #FEBDA6;outline-offset:-3px}
+  .status{position:absolute;left:12px;right:12px;top:12px;padding:10px 14px;margin:0;background:#26301f;color:#F4F1E8;font-size:14px;line-height:1.4;pointer-events:none}
+  [hidden]{display:none!important}
+  .film-player:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;display:flex;align-items:center}
+  .film-player:fullscreen video{object-fit:contain}
+  noscript a{position:absolute;bottom:0;left:0;padding:12px;background:#3E4A2B;color:#F4F1E8}
+  @media(hover:none){.controls{opacity:1}}
+  @media(max-width:480px){.invitation{padding:12px 18px;gap:8px;font-size:14px}.controls{gap:2px;padding:4px;font-size:11px}.time{display:none}}
+  @media(prefers-reduced-motion:reduce){.invitation,.controls{transition:none}}
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-film-player]').forEach((root) => {
+    const video = root.querySelector('video')!;
+    const cover = root.querySelector<HTMLButtonElement>('.cover')!;
+    const controls = root.querySelector<HTMLElement>('.controls')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    const mute = root.querySelector<HTMLButtonElement>('[data-mute]')!;
+    const full = root.querySelector<HTMLButtonElement>('[data-full]')!;
+    const scrub = root.querySelector<HTMLInputElement>('input')!;
+    const time = root.querySelector<HTMLElement>('.time')!;
+    const status = root.querySelector<HTMLElement>('.status')!;
+    let started = false;
+    const message = (text = '') => { status.textContent = text; status.hidden = !text; };
+    const update = () => {
+      root.classList.toggle('paused', video.paused);
+      toggle.textContent = video.ended ? 'Repetir' : video.paused ? 'Seguir' : 'Pausa';
+      toggle.setAttribute('aria-label', video.paused ? 'Reproducir' : 'Pausar');
+      scrub.value = String(video.currentTime);
+      scrub.style.setProperty('--played', `${(video.currentTime / Number(scrub.max)) * 100}%`);
+      time.textContent = `0:${Math.floor(video.currentTime).toString().padStart(2, '0')}`;
+    };
+    const play = async () => {
+      try { await video.play(); }
+      catch { message('No se pudo reproducir. Pulsa para intentarlo de nuevo.'); }
+    };
+    cover.addEventListener('click', () => {
+      message('Cargando película…');
+      // No src or source exists until this explicit user gesture.
+      if (!started || video.error) { video.src = '/home/ottoke-film.mp4'; started = true; }
+      void play();
+    });
+    video.addEventListener('playing', () => {
+      const moveFocus = document.activeElement === cover;
+      cover.hidden = true; controls.hidden = false; message(); update();
+      if (moveFocus) toggle.focus({ preventScroll: true });
+    });
+    video.addEventListener('waiting', () => { if (started) message('Cargando película…'); });
+    video.addEventListener('error', () => {
+      cover.hidden = false; controls.hidden = true;
+      message('No se pudo cargar el video. Pulsa para reintentar.');
+    });
+    ['pause', 'ended', 'timeupdate'].forEach(event => video.addEventListener(event, update));
+    video.addEventListener('loadedmetadata', () => { scrub.max = String(video.duration); });
+    toggle.addEventListener('click', () => { if (video.paused) void play(); else video.pause(); });
+    mute.addEventListener('click', () => {
+      video.muted = !video.muted;
+      mute.textContent = video.muted ? 'Sin sonido' : 'Sonido';
+      mute.setAttribute('aria-label', video.muted ? 'Activar sonido' : 'Silenciar sonido');
+    });
+    scrub.addEventListener('input', () => { if (Number.isFinite(video.duration)) video.currentTime = Number(scrub.value); });
+    full.addEventListener('click', async () => {
+      try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else if (root.requestFullscreen) await root.requestFullscreen();
+        else (video as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen?.();
+      } catch { message('Pantalla completa no disponible en este navegador.'); }
+    });
+    if (!root.requestFullscreen && !('webkitEnterFullscreen' in video)) full.hidden = true;
+    root.addEventListener('keydown', event => {
+      if (event.code === 'Space' && event.target === root) { event.preventDefault(); toggle.click(); }
+    });
+  });
+</script>

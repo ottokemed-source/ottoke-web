@@ -1,0 +1,26 @@
+{
+  "name": "Mariposa morada",
+  "wish": "Atrae intuición profunda, claridad espiritual y transformación interna.",
+  "available": true,
+  "archived": false,
+  "orden": 90,
+  "pattern": "serce",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/mariposa-morada-iphone.png",
+      "alt": "Norigae mariposa morada en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/mariposa-morada-bolso.jpg",
+      "alt": "Norigae mariposa morada como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#7F53C5",
+  "cutout": {
+    "w": 427,
+    "h": 1268,
+    "knot": 236,
+    "knotTop": 376,
+    "pivot": 0.454
+  }
+}

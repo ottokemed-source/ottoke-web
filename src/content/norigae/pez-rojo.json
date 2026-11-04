@@ -1,0 +1,26 @@
+{
+  "name": "Pez rojo",
+  "wish": "Atrae prosperidad, crecimiento constante y caminos de buena suerte.",
+  "available": true,
+  "archived": false,
+  "orden": 30,
+  "pattern": "serce",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/pez-rojo-iphone.png",
+      "alt": "Norigae pez rojo en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/pez-rojo-bolso.jpg",
+      "alt": "Norigae pez rojo como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#D3373E",
+  "cutout": {
+    "w": 400,
+    "h": 1243,
+    "knot": 223,
+    "knotTop": 348,
+    "pivot": 0.553
+  }
+}

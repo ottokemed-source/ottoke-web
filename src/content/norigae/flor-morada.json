@@ -1,0 +1,30 @@
+{
+  "name": "Flor morada",
+  "wish": "Atrae decisiones claras, equilibrio emocional y entendimiento profundo.",
+  "available": true,
+  "archived": false,
+  "orden": 10,
+  "pattern": "wezel",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/flor-morada-iphone.png",
+      "alt": "Norigae flor morada en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/flor-morada-bolso.jpg",
+      "alt": "Norigae flor morada como llavero en un bolso beige"
+    },
+    {
+      "src": "src/assets/fotos/flor-morada-en-la-mano.jpg",
+      "alt": "Norigae flor morada sostenido entre los dedos junto a una flor morada, frente a una casa de corredores rojos"
+    }
+  ],
+  "thread": "#8F4BB1",
+  "cutout": {
+    "w": 369,
+    "h": 1311,
+    "knot": 240,
+    "knotTop": 353,
+    "pivot": 0.515
+  }
+}

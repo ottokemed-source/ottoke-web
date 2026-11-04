@@ -1,0 +1,34 @@
+---
+// One hairpin in a list, linking to its page, with the same lines as a norigae card. At rest
+// it lies cut out on the paper and throws the same shadow as a norigae; the second photo
+// shows it worn: the card swaps to it under the pointer, on focus, and when it is "on" on
+// a touch screen.
+import { Image } from 'astro:assets';
+import { price } from '../data/horquillas.js';
+
+const { item } = Astro.props;
+const [whole, worn] = item.photos;
+---
+
+<a class="hairpin-card" href={`/horquillas/${item.slug}/`} data-card>
+  <span class="hairpin-card__photo">
+    <Image class="hairpin-card__base" src={item.cutout} alt={whole.alt} widths={[400, 800]} sizes="(min-width: 720px) 25vw, 50vw" format="webp" />
+    <Image class="hairpin-card__scene" src={worn.src} alt="" widths={[400, 800]} sizes="(min-width: 720px) 25vw, 50vw" format="webp" />
+  </span>
+  <span class="card__name">{item.name}</span>
+  <span class="card__wish">Horquilla</span>
+  <span class="card__price">{item.available ? price.display : 'Agotado'}</span>
+</a>
+
+<style>
+  .hairpin-card { display: block; border-radius: var(--radius-panel); text-decoration: none; }
+  /* the same 4:5 and corner as a norigae card, so the two kinds sit in one row */
+  .hairpin-card__photo { display: block; position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-panel); overflow: hidden; container-type: size; background: var(--color-hueso); }
+  .hairpin-card__photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.65s, transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
+  /* the margin keeps the shadow inside the photo's clip */
+  .hairpin-card__photo :global(.hairpin-card__base) { inset: 6%; width: 88%; height: 88%; object-fit: contain; filter: var(--cutout-shadow); }
+  .hairpin-card__photo :global(.hairpin-card__scene) { opacity: 0; transform: scale(1.04) rotate(-1deg); }
+  .hairpin-card:is(:hover, :focus-visible, .is-on) :global(.hairpin-card__scene) { opacity: 1; transform: scale(1) rotate(0); }
+  .hairpin-card:is(:hover, :focus-visible, .is-on) :global(.hairpin-card__base) { opacity: 0; transform: scale(0.98); }
+  @media (prefers-reduced-motion: reduce) { .hairpin-card__photo :global(img) { transition: none; transform: none; } }
+</style>

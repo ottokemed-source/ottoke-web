@@ -1,0 +1,22 @@
+{
+  "name": "Antigua Joseon",
+  "available": true,
+  "archived": false,
+  "orden": 40,
+  "thread": "#BFA087",
+  "cutout": "src/assets/horquillas/horquilla-conejo-blanco.png",
+  "fotos": [
+    {
+      "src": "src/assets/horquillas/horquilla-conejo-blanco.png",
+      "alt": "Horquilla con conejo blanco en un marco redondo y cadenas con cuentas, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-conejo-blanco-pelo.jpg",
+      "alt": "Horquilla de conejo blanco en marco redondo con cuentas colgantes sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-conejo-blanco-mano.jpg",
+      "alt": "Horquilla de conejo blanco sostenida entre las manos, frente a un jardín"
+    }
+  ]
+}

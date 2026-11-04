@@ -1,0 +1,26 @@
+{
+  "name": "Flor fucsia",
+  "wish": "Atrae valentía, determinación y energía para avanzar.",
+  "available": true,
+  "archived": false,
+  "orden": 60,
+  "pattern": "serce",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/flor-fucsia-iphone.png",
+      "alt": "Norigae flor fucsia en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/flor-fucsia-bolso.jpg",
+      "alt": "Norigae flor fucsia como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#DB3A76",
+  "cutout": {
+    "w": 371,
+    "h": 1409,
+    "knot": 242,
+    "knotTop": 351,
+    "pivot": 0.607
+  }
+}

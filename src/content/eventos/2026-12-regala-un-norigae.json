@@ -1,0 +1,31 @@
+{
+  "edition": "Navidad 2026",
+  "name": "Regala un Norigae",
+  "poster1": "¡Regala",
+  "poster2": "un norigae!",
+  "theme": "Una Navidad al estilo coreano",
+  "lead": "¡Celebra la Navidad de una manera diferente! Acompáñanos a vivir una experiencia creativa y cultural en la que aprenderás a elaborar tu propio norigae, un tradicional amuleto decorativo coreano que simboliza buenos deseos y prosperidad. Será la oportunidad perfecta para crear un regalo único y lleno de significado para tus seres queridos, mientras compartes, conoces nuevas personas y conectas con la cultura coreana.",
+  "includes": "Incluye bebidas y snacks coreanos, todos los materiales para elaborar tus propios llaveros inspirados en los norigae y tu creación, ideal para regalar a tu familia y amistades esta Navidad.",
+  "deposit": "Asegura tu cupo abonando el 50 % del valor ($25.000). Este abono no es reembolsable.",
+  "starts": "2026-12-19T15:00",
+  "ends": "2026-12-19T17:00",
+  "deadline": "2026-12-19T15:00",
+  "place": "Medellín",
+  "price": 50000,
+  "full": false,
+  "estado": "programado",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/eventos/mesa-delantales.jpg",
+      "alt": "Participantes con delantal y guantes alrededor de una mesa con esterillas y alga, bajo un letrero de neón en coreano."
+    },
+    {
+      "src": "src/assets/fotos/eventos/mesa-pulgares.jpg",
+      "alt": "Dos participantes con delantal levantan el pulgar junto a su mesa de trabajo."
+    },
+    {
+      "src": "src/assets/fotos/eventos/mesa-arroz.jpg",
+      "alt": "Una bola de arroz sobre una hoja de alga en una esterilla de bambú, lista para armar el kimbap."
+    }
+  ]
+}

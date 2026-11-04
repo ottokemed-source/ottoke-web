@@ -1,0 +1,26 @@
+{
+  "name": "Pez morado",
+  "wish": "Atrae éxito sereno, protección y oportunidades que fluyen.",
+  "available": true,
+  "archived": false,
+  "orden": 40,
+  "pattern": "wezel",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/pez-morado-iphone.png",
+      "alt": "Norigae pez morado en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/pez-morado-bolso.jpg",
+      "alt": "Norigae pez morado como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#8E4891",
+  "cutout": {
+    "w": 374,
+    "h": 1193,
+    "knot": 246,
+    "knotTop": 402,
+    "pivot": 0.617
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "edition": "1.ª edición",
+  "name": "K-cultura en la mesa",
+  "starts": "2026-02-01T10:00",
+  "ends": "2026-02-01T12:30",
+  "place": "Laureles, Medellín",
+  "estado": "programado",
+  "recuerdo": {
+    "text": [
+      "Una experiencia pensada para aprender, compartir y conectar con personas que disfrutan de los mismos intereses.",
+      "Durante dos horas y media comimos kimbap, una comida tradicional, hablamos de los K-dramas para descubrir qué es real y qué es ficción, y conocimos historias y datos curiosos que no siempre se ven en pantalla."
+    ],
+    "card": "src/assets/fotos/eventos/mesa-kimbap.jpg",
+    "cardAlt": "Kimbap a medio armar sobre una esterilla de bambú: arroz, huevo, zanahoria, pepino y carne.",
+    "fotos": [
+      {
+        "src": "src/assets/fotos/eventos/mesa-charla.jpg",
+        "alt": "Una mujer habla frente a un grupo sentado, bajo un letrero de neón rojo en coreano.",
+        "wide": false
+      },
+      {
+        "src": "src/assets/fotos/eventos/mesa-manos.jpg",
+        "alt": "Cuatro participantes con delantal junto a una mesa con esterillas y alga para kimbap; una hace un corazón con los brazos.",
+        "wide": false
+      },
+      {
+        "src": "src/assets/fotos/eventos/mesa-grupo.jpg",
+        "alt": "Foto de grupo de los asistentes en la calle, frente a una fachada amarilla.",
+        "wide": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "preguntas": [
+    {
+      "question": "¿Dónde está ubicada Ottoke?",
+      "answer": [
+        "¡Estamos en Medellín, Colombia! Por ahora no contamos con un punto físico permanente. Puedes encontrarnos en algunas ferias, eventos culturales y encuentros de comunidades de K-pop en los que participamos. Mientras tanto, puedes conocer nuestros productos y contactarnos a través de nuestros canales digitales."
+      ]
+    },
+    {
+      "question": "¿Cada cuánto realizan eventos y talleres?",
+      "answer": [
+        "¡Nos encanta crear espacios para compartir la cultura coreana! Realizamos talleres y eventos culturales en diferentes momentos del año. Anunciamos cada actividad con algunas semanas de anticipación a través de nuestra página web y redes sociales para que puedas conocer los detalles y prepararte para participar."
+      ]
+    },
+    {
+      "question": "¿Tienen kimchi no picante?",
+      "answer": [
+        "El picante es parte esencial del kimchi tradicional. Uno de sus ingredientes característicos es el gochugaru, un chile en polvo coreano que aporta color, sabor y un toque picante. En nuestro kimchi buscamos un picor suave y equilibrado, para que puedas disfrutar de esta preparación tradicional y descubrir nuevos sabores."
+      ]
+    },
+    {
+      "question": "¿Venden otros productos además de kimchi?",
+      "answer": [
+        "¡Sí! En Ottoke también encontrarás amuletos coreanos con significados especiales y horquillas inspiradas en la cultura coreana. Nos gusta compartir productos que te permitan descubrir y llevar contigo un pedacito de Corea."
+      ]
+    },
+    {
+      "question": "¿Qué significa Ottoke y por qué nació el proyecto?",
+      "answer": [
+        "Ottoke nace del interés por acercar culturas y crear conexiones entre personas a través de la gastronomía, las tradiciones y las experiencias compartidas. Nuestro propósito es promover la cooperación entre Corea del Sur y Colombia, impulsar el intercambio cultural y abrir espacios de encuentro con otras culturas del mundo."
+      ]
+    },
+    {
+      "question": "¿Ottoke también promueve el voluntariado y la cooperación internacional?",
+      "answer": [
+        "¡Sí! Creemos que conocer otras culturas también significa construir juntos. Por eso, nos interesa acercar a las personas a oportunidades de voluntariado, intercambio cultural y cooperación internacional, y orientar a quienes quieran involucrarse en estas experiencias.",
+        "Si te interesa participar o conocer más, puedes contactarnos a través de nuestros canales digitales. ¡Nos encantará conectar contigo!"
+      ]
+    }
+  ]
+}

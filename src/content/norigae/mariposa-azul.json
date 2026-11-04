@@ -1,0 +1,26 @@
+{
+  "name": "Mariposa azul",
+  "wish": "Atrae paz interior, intuición y decisiones claras.",
+  "available": true,
+  "archived": false,
+  "orden": 20,
+  "pattern": "gwiazdka",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/mariposa-azul-iphone.png",
+      "alt": "Norigae mariposa azul en una funda de iPhone con un reproductor de música de Ottoke"
+    },
+    {
+      "src": "src/assets/fotos/mariposa-azul-bolso.jpg",
+      "alt": "Norigae mariposa azul como llavero en un bolso beige"
+    }
+  ],
+  "thread": "#269CCF",
+  "cutout": {
+    "w": 477,
+    "h": 1436,
+    "knot": 304,
+    "knotTop": 441,
+    "pivot": 0.631
+  }
+}

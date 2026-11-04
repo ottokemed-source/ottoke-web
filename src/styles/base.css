@@ -1,0 +1,115 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+/* lets a keyboard skip the header; it shows only when it has the focus */
+.skip {
+  position: absolute;
+  z-index: 10;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-ink);
+  background: var(--color-page);
+  translate: 0 -200%;
+}
+.skip:focus-visible { translate: none; }
+
+.wrap {
+  width: min(100% - 2 * var(--gutter), var(--content-max));
+  margin-inline: auto;
+}
+
+.stack > * + * {
+  margin-top: var(--space-4);
+}
+
+/* buttons: square corners, a thin line and a small icon on the right.
+   Filled turns to outline on hover, outline turns to filled */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-page);
+  font-size: var(--text-label);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.button:hover,
+.button--outline {
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+.button--outline:hover {
+  background: var(--color-ink);
+  color: var(--color-page);
+}
+
+/* small line icons: in a button, on a tab and beside a footer link */
+.button svg,
+.tabs__tab svg,
+.swatch svg,
+.cards__all svg,
+.footer__nav svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}

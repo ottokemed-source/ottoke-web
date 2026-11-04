@@ -1,0 +1,222 @@
+---
+import { Image } from 'astro:assets';
+// the narrow cut of the heading face, for the title only
+import '@fontsource-variable/bricolage-grotesque/wdth.css';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { nosotras } from '../data/nosotras.js';
+
+// Names, trades, photos and the three stops of their story: the console's "Nosotras"
+// (src/content/nosotras.json). Ana María's photo is the one she chose (Drive, 2026-10-27);
+// Ivonne's is still provisional. A stop takes an optional photo with its alt: the sheet then
+// grows and shows it as a print beside the text.
+const founders = nosotras.fundadoras;
+
+// `otto` is a render of the 3D bear from public\home\otto, one colour for each sheet:
+// the olive and the bone one are square, the peach one is a 4:5 frame of the homepage loop.
+const looks = [
+  { otto: 'oliva', height: 800 },
+  { otto: '22', height: 1000 },
+  { otto: 'hueso', height: 800 },
+];
+const story = nosotras.historia.map((stop, i) => ({ ...stop, ...looks[i] }));
+---
+
+<Base
+  title="Nosotras: Ivonne y Ana María | Ottoke Medellín"
+  description="Ottoke es un colectivo de dos: Ivonne y Ana María. Un puente cultural entre Colombia y Corea del Sur, desde Medellín."
+  image="/og/norigae.jpg"
+>
+  <Header slot="header" />
+  <div class="about">
+    <section class="duo" aria-labelledby="titulo">
+      <h1 id="titulo">Nosotras</h1>
+      <ul class="duo__people">
+        {founders.map((person) => (
+          <li>
+            <div class="duo__print">
+              <Image src={person.photo} alt={person.alt} style={person.zoom} widths={[360, 640]} sizes="(min-width: 720px) 27vw, 44vw" format="webp" loading="eager" />
+            </div>
+            <div class="duo__text">
+              <p class="duo__role">Fundadora</p>
+              <h2>{person.name}</h2>
+              <p>{person.about}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="duo__place" lang="en"><span>Made</span> in <mark>Medellín</mark></p>
+    </section>
+
+    <section class="story" aria-label="Nuestra historia">
+      <svg class="story__cords" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M28 0C28 10 82 5 80 19S40 31 60 45S16 53 22 64S62 70 50 81S44 95 50 100" />
+        <path d="M72 0C72 6 96 9 92 22S80 35 64 45S32 56 14 65S54 74 54 81S56 95 50 100" />
+      </svg>
+      <ol class="story__stops">
+        {story.map((stop) => (
+          <li class:list={{ 'has-photo': stop.photo }}>
+            <img src={`/home/otto/${stop.otto}.webp`} alt="" width="800" height={stop.height} loading="lazy" decoding="async" />
+            <div>
+              <h2>{stop.title}</h2>
+              <p>{stop.text}</p>
+            </div>
+            {stop.photo && (
+              <div class="story__photo">
+                <Image src={stop.photo} alt={stop.alt} widths={[400, 800]} sizes="(min-width: 720px) 30vw, 80vw" format="webp" loading="lazy" />
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .about { --shadow: rgb(30 36 22 / 0.34); overflow-x: clip; }
+
+  /* The word fills the width of the screen in the narrow cut of the heading face; one
+     sheet of paper holds both photos, the same size and at the same height, and touches
+     the bottom of the letters: the two of them are one picture before anything is read. */
+  .duo {
+    /* Scene unit: a hundredth of the width, but smaller in a low window, so that the title
+       and both photos fit on the first screen under the 90px header (54 units and padding). */
+    --u: min(1vw, (100vh - 90px - 3rem) / 54);
+    padding: var(--space-5) var(--gutter) var(--space-6);
+  }
+  .duo h1,
+  .duo__place {
+    font-size: calc(24.5 * var(--u));
+    font-weight: 800;
+    font-stretch: 75%;
+    line-height: 0.8;
+    letter-spacing: -0.02em;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-inline: calc(-1 * var(--gutter));
+  }
+  /* the city closes the opening in the same voice as the title */
+  .duo__place { margin-top: var(--space-6); font-family: var(--font-heading); font-size: calc(20.3 * var(--u)); line-height: 0.95; }
+  .duo__place span { display: block; }
+  /* the marker stroke of the kimchi page, in the colours that drift behind the footer */
+  .duo__place mark {
+    padding: 0 0.08em;
+    border-radius: var(--radius-soft);
+    color: inherit;
+    background: linear-gradient(100deg, var(--color-durazno), var(--color-hueso), var(--color-oliva));
+  }
+  .duo__people {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: calc(4 * var(--u));
+    margin: calc(-1.5 * var(--u)) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .duo__people li { display: contents; }
+  .duo__people li:nth-child(1) > * { grid-column: 1; }
+  .duo__people li:nth-child(2) > * { grid-column: 2; }
+  /* the sheet is the print saved in film-papier.webp, as around the film */
+  .duo__people::before {
+    content: '';
+    grid-area: 1 / 1 / 2 / 3;
+    z-index: -1;
+    margin: -3.5%;
+    background: url('/home/film-papier.webp') center / 100% 100% no-repeat;
+    filter: drop-shadow(-0.3vw 0.4vw 0.8vw var(--shadow));
+  }
+  /* the ampersand lies on the gap and on the inner edge of both photos */
+  .duo__people::after {
+    content: '&' / '';
+    grid-area: 1 / 1 / 2 / 3;
+    place-self: center;
+    font-family: var(--font-heading);
+    font-size: calc(17 * var(--u));
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-durazno);
+    filter: drop-shadow(0 0.15vw 0.4vw var(--shadow));
+    pointer-events: none;
+  }
+  .duo__print { grid-row: 1; overflow: hidden; }
+  .duo__print img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  /* the second photo is a screenshot: the crop leaves its right edge out */
+  .duo__people li:nth-child(2) img { object-position: 30% 50%; }
+  .duo__text { grid-row: 2; margin-top: var(--space-6); text-align: center; }
+  .duo__role {
+    font-size: var(--text-label);
+    font-weight: var(--weight-strong);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+  .duo__people h2 { margin-block: var(--space-1) var(--space-3); font-size: clamp(1.75rem, calc(4.7 * var(--u)), 4.75rem); white-space: nowrap; font-weight: 800; line-height: 0.95; letter-spacing: -0.035em; }
+
+  /* Three sheets thrown on the table, each its own colour, size and tilt, with the 3D Otto
+     sitting on the edge of each. Behind them two ribbons, one for each of them: apart at the
+     first sheet, braided from the second one on. */
+  .story { position: relative; isolation: isolate; padding: var(--space-section) var(--gutter); }
+  .story__cords { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; }
+  /* Two soft ribbons in the two brand colours instead of thin lines; where they cross
+     and run together the colours mix, like two felt-tip strokes. */
+  .story__cords path {
+    fill: none;
+    stroke-width: clamp(7px, 0.9vw, 14px);
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    mix-blend-mode: multiply;
+  }
+  .story__cords path:nth-child(1) { stroke: var(--color-oliva); }
+  .story__cords path:nth-child(2) { stroke: var(--color-durazno); }
+  .story__stops {
+    display: grid;
+    gap: clamp(6rem, 12vw, 10rem);
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+  .story__stops li {
+    position: relative;
+    padding: var(--space-6);
+    border-radius: var(--radius-soft);
+    box-shadow: 0 0.4rem 1.2rem var(--shadow);
+  }
+  .story__stops li:nth-child(1) { background: color-mix(in oklab, var(--color-durazno) 55%, var(--color-page)); rotate: -1.5deg; }
+  .story__stops li:nth-child(2) { color: var(--color-hueso); background: var(--color-ink); rotate: 1.2deg; }
+  .story__stops li:nth-child(3) { background: var(--color-oliva); rotate: -0.8deg; }
+  .story__stops h2 { font-size: clamp(3.5rem, 11vw, 9.5rem); font-weight: 800; font-stretch: 75%; line-height: 0.82; letter-spacing: -0.02em; text-transform: uppercase; }
+  .story__stops p { max-width: 30ch; margin-top: var(--space-4); font-size: var(--text-lead); }
+  /* the frame has empty room above the bear: his paws overlap the edge of the sheet */
+  .story__stops li > img { position: absolute; right: 8%; bottom: 100%; width: clamp(6rem, 14vw, 11rem); translate: 0 13%; pointer-events: none; }
+  .story__stops li:nth-child(2) > img { right: auto; left: 6%; }
+  /* the square renders leave more room under the paws */
+  .story__stops li:nth-child(odd) > img { translate: 0 17%; }
+  /* a sheet with a photo: the print of the opening, tilted against the sheet it lies on */
+  .story__stops .has-photo { display: grid; gap: var(--space-5); align-items: start; }
+  .has-photo > div:first-of-type { display: contents; }
+  .story__photo {
+    padding: 4%;
+    background: url('/home/film-papier.webp') center / 100% 100% no-repeat;
+    filter: drop-shadow(-0.2rem 0.3rem 0.5rem var(--shadow));
+    rotate: 2.5deg;
+  }
+  .story__stops li:nth-child(even) .story__photo { rotate: -2.5deg; }
+  .story__photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+
+  @media (min-width: 720px) {
+    .duo__people { grid-template-columns: repeat(2, calc(27 * var(--u))); justify-content: center; column-gap: calc(2.5 * var(--u)); }
+    .duo__people::after { font-size: calc(11 * var(--u)); }
+    .story__stops li:nth-child(1) { width: 58%; }
+    .story__stops li:nth-child(2) { width: 50%; justify-self: end; margin-top: -3rem; }
+    .story__stops li:nth-child(3) { width: 62%; margin-left: 14%; }
+    /* the print hangs over the right edge of its sheet */
+    .story__stops li.has-photo { grid-template-columns: minmax(0, 1fr) minmax(0, 46%); width: 78%; }
+    .has-photo h2 { grid-column: 1 / -1; }
+    .has-photo .story__photo { margin: 0 -22% calc(-1 * var(--space-7)) 0; }
+  }
+</style>

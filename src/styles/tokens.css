@@ -1,0 +1,74 @@
+/*
+  Tokens: a scale, not a variable per component.
+  Breakpoints (CSS variables do not work inside @media, so they are constants):
+    720px  two columns of small things
+    960px  pictures beside the buying column
+*/
+:root {
+  /* colour: brand manual 2026 v1. Oliva and durazno carry no text (contrast 1.6) */
+  --color-hueso: #F4F1E8;
+  --color-page: var(--color-hueso); /* no white anywhere: the page is the paper */
+  --color-oliva: #C3CE94;
+  --color-durazno: #FEBDA6;
+  --color-ink: #3E4A2B;
+  --color-ink-soft: #5E6A4C;
+  --color-line: #D9DDD1;
+  --color-action: var(--color-ink);
+  --color-on-action: var(--color-page);
+
+  /* type: two faces, roles instead of sizes per component */
+  --font-body: 'Poppins', system-ui, sans-serif;
+  --font-heading: 'Bricolage Grotesque Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-note: 'Gowun Dodum', 'Poppins', system-ui, sans-serif; /* the thin line under the homepage title */
+  --weight-regular: 400;
+  --weight-strong: 600;
+  --weight-heading: 700;
+  --text-h1: clamp(2.25rem, 1.7rem + 2.6vw, 3.5rem);
+  --text-h2: clamp(1.625rem, 1.35rem + 1.3vw, 2.25rem);
+  --text-h3: 1.25rem;
+  --text-lead: 1.125rem;
+  --text-body: 1rem;
+  --text-label: 0.875rem;
+  --leading-tight: 1.1;
+  --leading-body: 1.55;
+
+  /* space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-section: clamp(3.5rem, 2.5rem + 5vw, 6.5rem);
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2rem);
+  --content-max: 82.5rem;
+  --measure: 62ch;
+
+  /* shape */
+  --radius-soft: 6px; /* the gentle corner of the homepage button, also on every photo */
+  --radius-panel: 1.25rem;
+  --radius-pill: 999px;
+
+  /* torn paper edge: the band the tear runs in, and how far a sheet overlaps the next one */
+  --tear-band: 2.9466vw;
+  --tear-overlap: calc(var(--tear-band) * 0.55);
+
+  /* motion */
+  --dur: 0.5s;
+  --ease: ease;
+  --ease-swing: ease-in-out;
+  --sway-angle: 2.5deg;
+  --sway-time: 2.8s;
+  --settle-time: 5s;
+  --flow-time: 25s;
+
+  /* the hanging piece and its panel */
+  --tint: 16%;
+  --knot-size: 18%;
+  --centre: 54%;
+  --pattern-size: 26cqw;
+  --pattern-strength: 0.5;
+  /* what a cut-out throws on the paper behind it: a norigae and a hairpin alike */
+  --cutout-shadow: drop-shadow(-4cqw 5cqw 1.2cqw color-mix(in oklab, var(--color-ink) 22%, transparent));
+}

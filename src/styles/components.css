@@ -1,0 +1,775 @@
+/* background motifs of a panel: the knot is cut from a real photo,
+   the star and the heart are redrawn after the Iconografia page of the brand manual */
+:root {
+  --icon-wezel: url(/patrones/wezel.png);
+  --icon-gwiazdka: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='translate(19 19) scale(.62)'%3E%3Cpath d='M50 50L50 10M50 50L81.3 25.1M50 50L89 58.9M50 50L67.4 86M50 50L32.6 86M50 50L11 58.9M50 50L18.7 25.1' fill='none' stroke='%23fff' stroke-width='13' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+  --icon-serce: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='translate(19 19) scale(.62)'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='14' stroke-linejoin='round' d='M50 84C20 62 10 44 10 31C10 17 21 8 33 8C41 8 47 12 50 18C53 12 59 8 67 8C79 8 90 17 90 31C90 44 80 62 50 84Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* panel: the stage a piece hangs on. Plain at rest, thread colour when "on".
+   Isolated, so the piece's z-index lifts it above the pattern only and its cord
+   never paints over the torn edge of the header */
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  container-type: size;
+  background: var(--color-hueso);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.panel--pattern::before {
+  background:
+    var(--icon) 0 0 / var(--pattern-size) var(--pattern-size),
+    var(--icon) calc(var(--pattern-size) / 2) calc(var(--pattern-size) / 2) / var(--pattern-size) var(--pattern-size);
+}
+
+.panel--on,
+.card:is(:hover, :focus-visible, .is-on) .panel {
+  background: color-mix(in oklab, var(--thread) var(--tint), var(--color-hueso));
+}
+
+.panel--on.panel--pattern::before,
+.card:is(:hover, :focus-visible, .is-on) .panel--pattern::before {
+  opacity: var(--pattern-strength);
+}
+
+.panel--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 70%;
+}
+
+/* a hairpin cut out of its photo lies whole on the paper, as on its card */
+.panel--cutout img {
+  padding: 6%;
+  object-fit: contain;
+  object-position: 50% 50%;
+  filter: var(--cutout-shadow);
+}
+
+/* piece: a cut-out norigae. --w --h --knot --knot-top --pivot are set inline per photo.
+   The knot gives every photo the same scale; the piece is centred from knot to tassels */
+.piece {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: calc(var(--centre) - (var(--knot-top) + var(--h)) / 2 / var(--knot) * var(--knot-size));
+  width: auto;
+  max-width: none;
+  height: calc(var(--h) / var(--knot) * var(--knot-size));
+  translate: calc(var(--pivot) * -100%) 0;
+  transform-origin: calc(var(--pivot) * 100%) 0;
+  filter: var(--cutout-shadow);
+  transition: filter var(--dur) var(--ease);
+}
+
+.panel--on .piece,
+.card:is(:hover, :focus-visible, .is-on) .piece {
+  filter: drop-shadow(-4cqw 5cqw 1.2cqw color-mix(in oklab, var(--thread) 45%, transparent));
+}
+
+/* The product picture swings all the time and ignores the pointer (Maks, 2026-10-06:
+   an exception to the "moving content has a pause" threshold). A card settles once when
+   it scrolls into view on a touch screen and swings for as long as the pointer is on it */
+@media (prefers-reduced-motion: no-preference) {
+  .card.is-on .piece {
+    animation: settle var(--settle-time) var(--ease-swing) 1;
+  }
+
+  .panel--sway .piece,
+  .card:is(:hover, :focus-visible) .piece {
+    animation: sway calc(var(--sway-time) * 2) infinite;
+  }
+}
+
+/* a pendulum let go: each swing a little smaller, at rest by the end */
+@keyframes settle {
+  0% { rotate: 0deg; }
+  12% { rotate: var(--sway-angle); }
+  32% { rotate: calc(var(--sway-angle) * -0.75); }
+  52% { rotate: calc(var(--sway-angle) * 0.5); }
+  70% { rotate: calc(var(--sway-angle) * -0.28); }
+  86% { rotate: calc(var(--sway-angle) * 0.1); }
+  100% { rotate: 0deg; }
+}
+
+/* starts and passes through plumb, so the swing begins without a jump */
+@keyframes sway {
+  0% { rotate: 0deg; animation-timing-function: ease-out; }
+  25% { rotate: var(--sway-angle); animation-timing-function: ease-in-out; }
+  75% { rotate: calc(var(--sway-angle) * -1); animation-timing-function: ease-in; }
+  100% { rotate: 0deg; }
+}
+
+/* card: one norigae in a list */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: block;
+  border-radius: var(--radius-panel);
+  text-decoration: none;
+}
+
+.card__name,
+.card__wish,
+.card__price {
+  display: block;
+}
+
+.card__name {
+  margin-top: var(--space-3);
+  font-weight: var(--weight-strong);
+}
+
+.card__wish {
+  color: var(--color-ink-soft);
+}
+
+.card__price {
+  font-size: var(--text-label);
+}
+
+/* a weight on a small outlined label beside its price, like the sticker on the jar */
+.weight {
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0.05em 0.6em;
+  border: 1px solid var(--color-ink-soft);
+  border-radius: var(--radius-pill);
+  font-size: 0.8em;
+  vertical-align: 0.1em;
+}
+
+/* gallery: one picture at a time, the next one is to the right.
+   Native sideways scroll with snapping; the arrows only scroll it */
+.gallery {
+  position: relative;
+  min-width: 0;
+}
+
+.gallery__track {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+/* a square as tall as the screen minus 8.25rem: the size the Arhoj product page uses,
+   so the picture and its counter fit on the first screen. On a wide screen the slides
+   sit side by side and the next picture shows in the space that is left */
+.gallery__slide {
+  flex: none;
+  width: min(100%, calc(100svh - 8.25rem));
+  scroll-snap-align: start;
+}
+
+.gallery .panel {
+  aspect-ratio: 1;
+  border-radius: 0;
+}
+
+.gallery__arrow {
+  position: absolute;
+  top: calc(50% - var(--space-5));
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  background: var(--color-ink);
+  color: var(--color-page);
+  cursor: pointer;
+}
+
+.gallery__arrow[hidden] {
+  display: none;
+}
+
+.gallery__arrow--prev { left: var(--space-5); }
+.gallery__arrow--next { right: var(--space-5); }
+
+.gallery__arrow svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+/* counter and a line that shows how far along the pictures you are */
+.gallery__bar {
+  position: relative;
+  padding: var(--space-3) var(--gutter);
+  border-bottom: 1px solid var(--color-line);
+  font-size: var(--text-label);
+}
+
+.gallery__bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: calc(100% / var(--slides));
+  height: 1px;
+  background: var(--color-ink);
+  translate: calc(var(--index, 0) * 100%) 0;
+  transition: translate var(--dur) var(--ease);
+}
+
+/* product: pictures on the left edge of the page, the buying column beside them */
+.product {
+  display: grid;
+}
+
+.product__info {
+  padding: var(--space-6) var(--gutter) var(--space-7);
+}
+
+.lead {
+  font-size: var(--text-lead);
+}
+
+.price {
+  font-size: var(--text-h3);
+}
+
+/* a sold-out product keeps its price and says so beside it (the console's "Disponible") */
+.sold-out {
+  margin-left: var(--space-3);
+  font-size: var(--text-label);
+  font-weight: var(--weight-strong);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.actions .button {
+  flex: 1 1 11rem;
+  justify-content: space-between;
+}
+
+.fold {
+  border-top: 1px solid var(--color-line);
+}
+
+.fold summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 3.5rem;
+  font-weight: var(--weight-strong);
+  list-style: none;
+  cursor: pointer;
+}
+
+.fold summary::-webkit-details-marker {
+  display: none;
+}
+
+.fold summary::after {
+  content: '';
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-right: var(--space-1);
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  rotate: 45deg;
+  transition: rotate var(--dur) var(--ease);
+}
+
+.fold[open] summary::after {
+  rotate: 225deg;
+}
+
+.fold p {
+  max-width: var(--measure);
+  padding-bottom: var(--space-5);
+  color: var(--color-ink-soft);
+}
+
+/* tabs: the questions in two groups. Radio buttons do the switching, so it needs no
+   script and the arrow keys move between the tabs. The line under a tab draws itself
+   from the left on hover and stays under the chosen one */
+.tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-6);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tabs__radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-3);
+  font-size: var(--text-label);
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tabs__tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: var(--space-2);
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale calc(var(--dur) * 0.6) var(--ease);
+}
+
+.tabs__tab:hover::after,
+.tabs__radio:checked + .tabs__tab::after {
+  scale: 1 1;
+}
+
+.tabs__radio:focus-visible + .tabs__tab {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.tabs__panel {
+  display: none;
+}
+
+.tabs:has(.tabs__radio:nth-of-type(1):checked) .tabs__panel:nth-of-type(1),
+.tabs:has(.tabs__radio:nth-of-type(2):checked) .tabs__panel:nth-of-type(2) {
+  display: block;
+}
+
+/* swatches: the other designs. Hover or focus shows a small picture of the piece */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.swatch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding-inline: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-ink-soft);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-label);
+  text-decoration: none;
+}
+
+.swatch::before {
+  content: '';
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--thread);
+}
+
+/* the last pill leads to the whole collection: an arrow instead of a colour */
+.swatch--more {
+  padding-inline: var(--space-4) var(--space-3);
+}
+
+.swatch--more::before {
+  content: none;
+}
+
+.swatch[aria-current] {
+  outline: 2px solid var(--color-ink);
+  outline-offset: -2px;
+  font-weight: var(--weight-strong);
+}
+
+.swatch__preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + var(--space-3));
+  z-index: 5;
+  width: 11rem;
+  box-shadow: 0 var(--space-3) var(--space-6) color-mix(in oklab, var(--color-ink) 24%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  translate: -50% var(--space-2);
+  pointer-events: none;
+  transition:
+    opacity var(--dur) var(--ease),
+    translate var(--dur) var(--ease),
+    visibility var(--dur);
+}
+
+/* :focus, not :focus-visible: a tap on a phone has to open it too */
+.swatch:is(:hover, :focus) .swatch__preview {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+}
+
+@media (min-width: 960px) {
+  .product {
+    grid-template-columns: minmax(0, 1fr) 31.25rem;
+    align-items: start;
+  }
+
+  .product__info {
+    position: sticky;
+    top: 0;
+    min-height: 100%;
+    padding: var(--space-7);
+  }
+
+  /* the dividing line belongs to the pictures, so it ends at the line under them
+     and does not run on beside a longer buying column */
+  .gallery {
+    border-right: 1px solid var(--color-line);
+  }
+}
+
+/* sections under the first screen */
+.band {
+  padding-block: var(--space-section);
+}
+
+/* torn: a sheet of --paper torn like the header and the prints on the homepage, with the
+   same outline and white paper rim (assets/tear) at the same page scale: a narrower box
+   shows a cut of the full-width tear, never a squeezed one. The edges hang outside the
+   box; the top one is the mirror image of the bottom one. --torn-gap keeps them clear */
+.torn {
+  --torn-gap: var(--tear-band);
+  position: relative;
+  margin-block: var(--torn-gap);
+  background: var(--paper);
+}
+
+.torn::before,
+.torn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--tear-band);
+  background: url('../assets/tear/tear-rim.png') 0 0 / 100vw 100%, var(--paper);
+  mask: url('../assets/tear/tear-mask.png') 0 0 / 100vw 100%;
+  pointer-events: none;
+}
+
+.torn::before {
+  bottom: calc(100% - 1px);
+  scale: 1 -1;
+}
+
+.torn::after {
+  top: calc(100% - 1px);
+}
+
+/* torn at the top only */
+.torn--top {
+  margin-bottom: 0;
+}
+
+.torn--top::after {
+  content: none;
+}
+
+/* "Más productos" under a product: a sheet torn at the top, lightly tinted with the
+   product's thread and fading into the page before the footer */
+.band--more {
+  --paper: color-mix(in oklab, var(--thread) var(--tint), var(--color-page));
+  padding-top: var(--space-7);
+  background: linear-gradient(var(--paper), var(--color-page) 75%);
+}
+
+.band__head {
+  margin-bottom: var(--space-6);
+}
+
+/* small cards, about six across on a wide screen, as in the reference */
+@media (min-width: 720px) {
+  .cards {
+    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  }
+}
+
+/* "Más productos": one row that scrolls sideways, ending in a link to every product */
+.cards--row {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(10.5rem, 42%);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-4);
+}
+
+.cards--row > li {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 720px) {
+  .cards--row {
+    grid-template-columns: none;
+    grid-auto-columns: 12.5rem;
+  }
+}
+
+.cards__all {
+  display: flex;
+  aspect-ratio: 4 / 5;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.cards__all:hover,
+.cards__all:focus-visible {
+  text-decoration: underline;
+}
+
+/* collection: a panorama, a label and a grid of cards. On /products/ once per kind
+   of product, and on the page of each kind (/norigae/, /horquillas/) */
+.collection__panorama {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.collection__panorama img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection__label {
+  margin-block: var(--space-7) var(--space-6);
+  font-size: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.collection__lead {
+  margin-block: calc(var(--space-3) - var(--space-6)) var(--space-6);
+  text-align: center;
+}
+
+.collection__more {
+  margin-top: var(--space-6);
+  font-size: var(--text-label);
+  text-align: center;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6) var(--space-2);
+  margin-block: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-grid > li {
+  flex: 0 1 calc((100% - var(--space-2)) / 2);
+  min-width: 0;
+}
+
+/* in a collection grid every card is a square with the soft corner: a norigae panel and a
+   hairpin photo alike (the extra li outranks the hairpin card's scoped rule) */
+.product-grid .panel,
+.product-grid > li .hairpin-card__photo {
+  aspect-ratio: 1;
+  border-radius: var(--radius-soft);
+}
+
+@media (min-width: 720px) {
+  .collection__panorama {
+    aspect-ratio: 3 / 1;
+  }
+
+  .product-grid > li {
+    flex-basis: calc((100% - 3 * var(--space-2)) / 4);
+  }
+}
+
+/* footer: the brand colours drift sideways behind it, slowly and with no pause switch
+   (Maks, 2026-10-06: an exception to the "moving content has a pause" threshold).
+   The gradient repeats its three colours, so the loop closes without a visible jump */
+.footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--space-7) var(--gutter) var(--space-5);
+}
+
+.footer__color {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+      100deg,
+      var(--color-durazno) 0%,
+      var(--color-hueso) 16.6667%,
+      var(--color-oliva) 33.3333%,
+      var(--color-durazno) 50%,
+      var(--color-hueso) 66.6667%,
+      var(--color-oliva) 83.3333%,
+      var(--color-durazno) 100%
+    )
+    25% 50% / 500% 100%;
+}
+
+.footer__name {
+  width: clamp(11rem, 6rem + 16vw, 19rem);
+}
+
+.footer__story p {
+  font-family: var(--font-heading);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-tight);
+}
+
+.footer__main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-7) var(--space-5);
+  margin-block: var(--space-7) var(--space-6);
+}
+
+.footer__story {
+  grid-column: 1 / -1;
+}
+
+.footer__story small {
+  display: block;
+  margin-top: var(--space-5);
+  font-size: var(--text-label);
+}
+
+.footer__logo {
+  width: 5.5rem;
+  margin-top: var(--space-5);
+}
+
+/* on a phone one heading takes two lines: both get that height, so the lists start level */
+.footer__nav h2 {
+  display: flex;
+  align-items: end;
+  min-height: calc(2em * var(--leading-tight));
+  margin-bottom: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footer__nav ul {
+  margin: 0;
+  padding: 0;
+  font-size: var(--text-lead);
+  list-style: none;
+}
+
+.footer__nav li {
+  padding-block: var(--space-2);
+}
+
+.footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+}
+
+.footer__nav a:hover {
+  text-decoration: underline;
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid color-mix(in oklab, var(--color-ink) 33%, transparent);
+  font-size: var(--text-label);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer__color {
+    animation: flow var(--flow-time) linear infinite;
+  }
+}
+
+@keyframes flow {
+  from { background-position: 0% 50%; }
+  to { background-position: 62.5% 50%; }
+}
+
+@media (min-width: 720px) {
+  .footer__main {
+    grid-template-columns: 1.7fr 1fr 1fr;
+  }
+
+  .footer__story {
+    grid-column: auto;
+  }
+
+  .footer__nav h2 {
+    min-height: 0;
+  }
+}
+
+@media (min-width: 960px) {
+  .footer {
+    padding-inline: var(--space-7);
+  }
+}

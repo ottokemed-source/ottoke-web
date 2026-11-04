@@ -1,0 +1,22 @@
+{
+  "name": "Dragón azul",
+  "available": true,
+  "archived": false,
+  "orden": 10,
+  "thread": "#4F74C4",
+  "cutout": "src/assets/horquillas/horquilla-dragon-base.png",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/horquilla-dragon-base.png",
+      "alt": "Horquilla de dragón plateado con piedra azul, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquillas-kok-v1.png",
+      "alt": "Horquilla de dragón plateado con piedra azul sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-dragon-scene.png",
+      "alt": "Detalle del dragón plateado y la piedra azul de la horquilla sobre tela verde oliva"
+    }
+  ]
+}

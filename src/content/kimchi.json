@@ -1,0 +1,54 @@
+{
+  "precio": 15000,
+  "peso_g": 300,
+  "available": true,
+  "lead": "Kimchi artesanal hecho en Medellín. La tradición coreana, ahora en tu mesa.",
+  "frase": "Un clásico coreano fermentado que conquista por su sabor y tradición.",
+  "rasgos": [
+    "Hecho a mano",
+    "Fermentado natural",
+    "Picante suave",
+    "Hecho en Medellín",
+    "Por encargo",
+    "Mantener refrigerado"
+  ],
+  "salud_titulo": "¡Dale un toque saludable a tu alimentación con nuestro kimchi!",
+  "salud": "Este fermentado coreano es rico en probióticos que favorecen la salud intestinal, apoyan la digestión y contribuyen al bienestar de tus defensas.",
+  "fotos": [
+    {
+      "src": "src/assets/fotos/kimchi-ottoke-kafelki-v1.png",
+      "alt": "Tarro de kimchi Ottoke con etiqueta crema y tapa verde oliva"
+    },
+    {
+      "src": "src/assets/fotos/kimchi/kimchi-balcon-horizontal.png",
+      "alt": "Kimchi Ottoke con zanahoria y cebolla larga en un recipiente negro al sol"
+    },
+    {
+      "src": "src/assets/fotos/kimchi-ottoke-widelec-v3.png",
+      "alt": "Kimchi Ottoke abierto con un bocado de col en un tenedor"
+    }
+  ],
+  "platos": [
+    {
+      "name": "Arroz frito con kimchi",
+      "korean": "Kimchi-bokkeumbap",
+      "href": "https://www.maangchi.com/recipe/kimchi-bokkeumbap",
+      "image": "src/assets/fotos/kimchi/bokkeumbap.jpg",
+      "alt": "Arroz frito con un huevo frito encima en un bol blanco"
+    },
+    {
+      "name": "Estofado de kimchi",
+      "korean": "Kimchi-jjigae",
+      "href": "https://www.maangchi.com/recipe/kimchi-jjigae",
+      "image": "src/assets/fotos/kimchi/jjigae.jpg",
+      "alt": "Estofado rojo con tofu y cebolla larga"
+    },
+    {
+      "name": "Estofado con fideos y kimchi",
+      "korean": "Budae-jjigae",
+      "href": "https://www.maangchi.com/recipe/budae-jjigae",
+      "image": "src/assets/fotos/kimchi/budae-jjigae.jpg",
+      "alt": "Olla de estofado rojo con fideos y tofu hirviendo en la estufa"
+    }
+  ]
+}

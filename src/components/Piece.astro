@@ -1,0 +1,18 @@
+---
+// A cut-out norigae hanging in a panel. Geometry comes from the photo's own numbers.
+import { Image } from 'astro:assets';
+
+const cutouts = import.meta.glob('../assets/norigae/*.png', { eager: true, import: 'default' });
+const { item, alt, loading = 'lazy' } = Astro.props;
+const { w, h, knot, knotTop, pivot } = item.cutout;
+---
+
+<Image
+  class="piece"
+  src={cutouts[`../assets/norigae/${item.slug}.png`]}
+  alt={alt}
+  format="webp"
+  quality={90}
+  loading={loading}
+  style={`--w:${w}; --h:${h}; --knot:${knot}; --knot-top:${knotTop}; --pivot:${pivot}`}
+/>

@@ -1,0 +1,22 @@
+{
+  "name": "Oráculo",
+  "available": true,
+  "archived": false,
+  "orden": 90,
+  "thread": "#9BB1C0",
+  "cutout": "src/assets/horquillas/horquilla-estrella-celeste.png",
+  "fotos": [
+    {
+      "src": "src/assets/horquillas/horquilla-estrella-celeste.png",
+      "alt": "Horquilla con estrella celeste, cuenta turquesa y cadenas largas colgantes, vista completa"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-estrella-celeste-pelo.jpg",
+      "alt": "Horquilla de estrella celeste con cuenta turquesa y cadenas largas sujetando un moño de pelo castaño"
+    },
+    {
+      "src": "src/assets/fotos/horquilla-estrella-celeste-mano.jpg",
+      "alt": "Horquilla de estrella celeste sostenida entre las manos, frente a un jardín"
+    }
+  ]
+}
