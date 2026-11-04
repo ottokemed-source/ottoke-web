@@ -1,7 +1,7 @@
 {
   "name": "Flor morada",
   "wish": "Atrae decisiones claras, equilibrio emocional y entendimiento profundo.",
-  "available": false,
+  "available": true,
   "archived": false,
   "orden": 10,
   "pattern": "wezel",
