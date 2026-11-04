@@ -5,5 +5,14 @@
   "archived": false,
   "orden": 100,
   "pattern": "wezel",
-  "foto_recorte": "src/assets/fotos/2188b5f0f-8d55-4074-85cd-11571c6e53dd.webp"
+  "foto_recorte": "src/assets/fotos/2188b5f0f-8d55-4074-85cd-11571c6e53dd.webp",
+  "thread": "#A18A8F",
+  "cutout": {
+    "w": 241,
+    "h": 1189,
+    "knot": 81,
+    "knotTop": 212,
+    "pivot": 0.258
+  },
+  "recortado": "src/assets/fotos/2188b5f0f-8d55-4074-85cd-11571c6e53dd.webp"
 }
