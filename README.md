@@ -35,6 +35,10 @@ Obieg:
 7. Przed publikacją dla Google: `published = true` w `src\layouts\Base.astro`,
    usunąć `src\pages\eventos\sin-fecha.astro` i otwarcie, którego nie wybrały.
 
+Po pilocie (decyzja Maksa 2026-11-04): reguła na gałęzi `main` w GitHubie, zapis tylko
+przez workflow "Publicar" (GitHub Actions w bypass), żeby zapis w Pages CMS na `main`
+przez pomyłkę był niemożliwy.
+
 Do sprawdzenia w pilocie: czy pole daty zapisuje `2026-12-19T15:00`, czy przycisk
 "Publicar" startuje workflow na `borrador`, czy dwie osoby naraz nie nadpisują
 sobie tego samego pliku.
