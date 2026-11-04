@@ -22,7 +22,7 @@ actions:
     ref: borrador
     confirm:
       title: ¿Publicar los cambios?
-      message: Todo lo que guardaron y revisaron en la página de prueba pasa a la página real en un par de minutos.
+      message: Todo lo que guardaron pasa a la página real en un par de minutos. Antes, revísalo en la vista previa, borrador.ottoke-web.pages.dev.
       button: Publicar
 
 content:

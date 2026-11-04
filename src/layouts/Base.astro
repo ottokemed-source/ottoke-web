@@ -39,6 +39,15 @@ const safeJson = (data) => JSON.stringify(data).replace(/[<>&]/g, (c) => `\\u${c
     {jsonLd.map((data) => <script type="application/ld+json" set:html={safeJson(data)} />)}
   </head>
   <body>
+    {
+      /* only on the draft preview: what they are looking at, and the way back to publish it */
+      preview && (
+        <p class="preview-bar" role="status">
+          Vista previa: así se verá la página. ¿Todo bien?
+          <a href="https://app.pagescms.org/ottokemed-source/ottoke-web/borrador">Vuelve a la consola y pulsa «Publicar en la página»</a>
+        </p>
+      )
+    }
     <a class="skip" href="#main">Saltar al contenido</a>
     <slot name="header" />
     <main id="main">

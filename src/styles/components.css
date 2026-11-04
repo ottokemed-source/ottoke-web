@@ -773,3 +773,20 @@
     padding-inline: var(--space-7);
   }
 }
+
+/* the bar of the draft preview (Base.astro): never on the live site */
+.preview-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: var(--space-3);
+  background: var(--color-durazno);
+  color: var(--color-ink);
+  font-size: var(--text-label);
+  font-weight: var(--weight-strong);
+  text-align: center;
+}
+
+.preview-bar a {
+  color: inherit;
+}
