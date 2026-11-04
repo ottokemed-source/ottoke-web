@@ -47,5 +47,11 @@ jobs:
             git config user.email "ottoke-bot@users.noreply.github.com"
             git add src/content src/assets public/og
             git commit -m "Recortar fotos nuevas"
-            git push origin borrador
+            # a client may save again while this runs: take her commit first, then push
+            for attempt in 1 2 3; do
+              if git pull --rebase origin borrador && git push origin borrador; then exit 0; fi
+              git rebase --abort 2>/dev/null || true
+              sleep 10
+            done
+            exit 1
           fi
