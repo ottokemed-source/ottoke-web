@@ -1,7 +1,7 @@
 {
   "name": "Prueba",
   "wish": "siemanko, 12334",
-  "available": true,
+  "available": false,
   "archived": false,
   "orden": 100,
   "pattern": "wezel",
