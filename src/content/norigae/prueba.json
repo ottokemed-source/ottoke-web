@@ -2,7 +2,7 @@
   "name": "Prueba",
   "wish": "siemanko, 12334",
   "available": true,
-  "archived": true,
+  "archived": false,
   "orden": 100,
   "pattern": "wezel",
   "foto_recorte": "src/assets/fotos/2188b5f0f-8d55-4074-85cd-11571c6e53dd.webp",
