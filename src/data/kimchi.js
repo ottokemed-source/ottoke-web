@@ -1,4 +1,4 @@
-import { read, image, link, photo, money, z } from './content.js';
+import { read, image, link, photo, pictures, money, z } from './content.js';
 
 // The kimchi page: the console's "Kimchi" (src/content/kimchi.json).
 export const kimchi = read(
@@ -16,7 +16,7 @@ export const kimchi = read(
     platos: z.array(z.object({ name: z.string(), korean: z.string(), href: link, image: z.string(), alt: z.string() })),
   }),
 );
-kimchi.fotos = kimchi.fotos.map((f) => ({ ...f, src: image(f.src) }));
+kimchi.fotos = pictures(kimchi.fotos, 'Kimchi artesanal de Ottoke hecho en Medellín');
 kimchi.platos = kimchi.platos.map((d) => ({ ...d, image: image(d.image) }));
 
 export const price = { display: money(kimchi.precio), weight: `${kimchi.peso_g} g`, value: kimchi.precio, currency: 'COP' };

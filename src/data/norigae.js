@@ -1,4 +1,4 @@
-import { readAll, image, og, photo, z } from './content.js';
+import { readAll, image, og, photo, pictures, z } from './content.js';
 import { productos, offer } from './productos.js';
 
 // One file per norigae in src/content/norigae, edited in the console. `thread` and `cutout`
@@ -27,4 +27,4 @@ const all = readAll(
 export const norigae = all
   .filter((item) => !item.archived && item.cutout && item.thread)
   .sort((a, b) => a.orden - b.orden || a.name.localeCompare(b.name))
-  .map((item) => ({ ...item, og: og(`${item.slug}.jpg`, '/og/norigae.jpg'), fotos: item.fotos.map((f) => ({ ...f, src: image(f.src) })) }));
+  .map((item) => ({ ...item, og: og(`${item.slug}.jpg`, '/og/norigae.jpg'), fotos: pictures(item.fotos, `Norigae ${item.name.toLowerCase()} tejido a mano por Ottoke en Medellín`) }));

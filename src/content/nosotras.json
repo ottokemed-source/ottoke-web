@@ -4,14 +4,14 @@
       "name": "Ivonne",
       "about": "Publicista.",
       "photo": "src/assets/fotos/nosotras/ivonne.webp",
-      "alt": "Ivonne, fundadora de Ottoke, sonríe sentada en unas escaleras de piedra con sombrero.",
+      "alt": "Ivonne, cofundadora de Ottoke, cultura coreana en Medellín",
       "zoom": "scale: 1.45; transform-origin: 57% 92%"
     },
     {
       "name": "Ana María",
       "about": "Negociadora internacional.",
       "photo": "src/assets/fotos/nosotras/ana-maria-2026-10.jpg",
-      "alt": "Ana María, fundadora de Ottoke, sonríe con blazer azul y corbata bajo una cúpula de cristal."
+      "alt": "Ana María, cofundadora de Ottoke, cultura coreana en Medellín"
     }
   ],
   "historia": [

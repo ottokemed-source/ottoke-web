@@ -17,15 +17,15 @@
   "fotos": [
     {
       "src": "src/assets/fotos/eventos/mesa-delantales.jpg",
-      "alt": "Participantes con delantal y guantes alrededor de una mesa con esterillas y alga, bajo un letrero de neón en coreano."
+      "alt": "Participantes con delantal alrededor de la mesa en un taller de cultura coreana de Ottoke en Medellín"
     },
     {
       "src": "src/assets/fotos/eventos/mesa-pulgares.jpg",
-      "alt": "Dos participantes con delantal levantan el pulgar junto a su mesa de trabajo."
+      "alt": "Participantes contentos en un taller de cultura coreana de Ottoke"
     },
     {
       "src": "src/assets/fotos/eventos/mesa-arroz.jpg",
-      "alt": "Una bola de arroz sobre una hoja de alga en una esterilla de bambú, lista para armar el kimbap."
+      "alt": "Arroz sobre alga para kimbap en un taller de cocina coreana de Ottoke"
     }
   ]
 }

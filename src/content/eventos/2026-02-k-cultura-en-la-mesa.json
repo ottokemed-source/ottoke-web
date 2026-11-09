@@ -15,17 +15,17 @@
     "fotos": [
       {
         "src": "src/assets/fotos/eventos/mesa-charla.jpg",
-        "alt": "Una mujer habla frente a un grupo sentado, bajo un letrero de neón rojo en coreano.",
+        "alt": "Kimbap a medio armar en el taller K-Cultura a la Mesa de Ottoke en Medellín",
         "wide": false
       },
       {
         "src": "src/assets/fotos/eventos/mesa-manos.jpg",
-        "alt": "Cuatro participantes con delantal junto a una mesa con esterillas y alga para kimbap; una hace un corazón con los brazos.",
+        "alt": "Charla sobre K-dramas y cultura coreana en K-Cultura a la Mesa, Medellín",
         "wide": false
       },
       {
         "src": "src/assets/fotos/eventos/mesa-grupo.jpg",
-        "alt": "Foto de grupo de los asistentes en la calle, frente a una fachada amarilla.",
+        "alt": "Participantes con delantal preparan kimbap en el taller de cocina coreana de Ottoke",
         "wide": true
       }
     ]

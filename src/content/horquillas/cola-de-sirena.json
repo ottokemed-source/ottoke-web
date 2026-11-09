@@ -8,15 +8,15 @@
   "fotos": [
     {
       "src": "src/assets/horquillas/horquilla-cola-de-sirena.png",
-      "alt": "Horquilla plateada con forma de cola de sirena y una cuenta tornasol, vista completa"
+      "alt": "Horquilla leyenda de la sirena de Ottoke, accesorio coreano para el pelo, vista completa"
     },
     {
       "src": "src/assets/fotos/horquilla-cola-de-sirena-pelo.jpg",
-      "alt": "Horquilla de cola de sirena con cuenta tornasol sujetando un moño de pelo castaño"
+      "alt": "Horquilla leyenda de la sirena en un moño, accesorio de inspiración coreana de Ottoke en Medellín"
     },
     {
       "src": "src/assets/fotos/horquilla-cola-de-sirena-mano.jpg",
-      "alt": "Horquilla de cola de sirena sobre la palma de una mano, frente a un jardín"
+      "alt": "Horquilla leyenda de la sirena sobre la mano, de la colección de temporada de Ottoke"
     }
   ]
 }

@@ -46,6 +46,7 @@ content:
       - { name: instagram, label: Instagram (enlace), type: string, required: true }
       - { name: tiktok, label: TikTok (enlace), type: string, required: true }
       - { name: dm, label: Mensaje directo de Instagram (enlace), type: string, required: true }
+      - { name: formulario, label: Enlace del formulario de interesados, description: 'El enlace de su Google Form, empieza con https://. Con el enlace, los botones "Avísame" llevan al formulario; vacío, llevan a WhatsApp.', type: string }
 
   - name: productos
     label: Precios y textos de productos
@@ -132,7 +133,7 @@ content:
         list: { max: 4 }
         fields:
           - { name: src, label: Foto, type: image, required: true, options: { media: fotos } }
-          - { name: alt, label: Qué se ve en la foto, description: Para personas que no ven la foto y para Google., type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+          - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string, options: { maxlength: 160 } }
       - { name: thread, type: string, hidden: true }
       - name: cutout
         type: object
@@ -172,7 +173,7 @@ content:
         list: { min: 2, max: 4 }
         fields:
           - { name: src, label: Foto, type: image, required: true, options: { media: fotos } }
-          - { name: alt, label: Qué se ve en la foto, type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+          - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string, options: { maxlength: 160 } }
       - { name: thread, type: string, hidden: true }
       - { name: cutout, type: string, hidden: true }
 
@@ -196,7 +197,7 @@ content:
         list: { min: 1, max: 6 }
         fields:
           - { name: src, label: Foto, type: image, required: true, options: { media: fotos } }
-          - { name: alt, label: Qué se ve en la foto, type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+          - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string, options: { maxlength: 160 } }
       - name: platos
         label: Cómo comerlo
         type: object
@@ -252,7 +253,7 @@ content:
         list: { max: 6 }
         fields:
           - { name: src, label: Foto, type: image, required: true, options: { media: fotos, path: eventos } }
-          - { name: alt, label: Qué se ve en la foto, type: string, required: true, options: { minlength: 20, maxlength: 160 } }
+          - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string, options: { maxlength: 160 } }
       - name: recuerdo
         label: Después del evento
         description: Al llenarlo, el evento pasa a "Eventos anteriores" cuando termina.
@@ -267,7 +268,7 @@ content:
             list: { max: 6 }
             fields:
               - { name: src, label: Foto, type: image, required: true, options: { media: fotos, path: eventos } }
-              - { name: alt, label: Qué se ve en la foto, type: string, required: true }
+              - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string }
               - { name: wide, label: Foto ancha, type: boolean, default: false }
 
   # --- Páginas ---------------------------------------------------------------

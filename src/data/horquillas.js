@@ -1,4 +1,4 @@
-import { readAll, image, og, photo, z } from './content.js';
+import { readAll, image, og, photo, pictures, z } from './content.js';
 import { productos, offer } from './productos.js';
 
 // One file per hairpin in src/content/horquillas, edited in the console. Slugs (file names)
@@ -24,4 +24,4 @@ const all = readAll(
 export const horquillas = all
   .filter((item) => !item.archived)
   .sort((a, b) => a.orden - b.orden || a.name.localeCompare(b.name))
-  .map(({ fotos, cutout, ...item }) => ({ ...item, og: og(`horquilla-${item.slug}.jpg`, '/og/horquilla-dragon-azul.jpg'), cutout: image(cutout ?? fotos[0].src), photos: fotos.map((f) => ({ ...f, src: image(f.src) })) }));
+  .map(({ fotos, cutout, ...item }) => ({ ...item, og: og(`horquilla-${item.slug}.jpg`, '/og/horquilla-dragon-azul.jpg'), cutout: image(cutout ?? fotos[0].src), photos: pictures(fotos, `Horquilla ${item.name.toLowerCase()} de Ottoke, Medellín`) }));

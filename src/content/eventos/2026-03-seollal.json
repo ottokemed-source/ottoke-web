@@ -15,17 +15,17 @@
     "fotos": [
       {
         "src": "src/assets/fotos/eventos/seollal-hanbok.jpg",
-        "alt": "Una participante sonríe con un hanbok rosado frente a un muro pintado en blanco y negro.",
+        "alt": "Presentación del Año Nuevo Coreano (Seollal) de Ottoke en Medellín",
         "wide": false
       },
       {
         "src": "src/assets/fotos/eventos/seollal-grupo.jpg",
-        "alt": "Tres mujeres posan sonrientes frente a una bandera de Corea del Sur con globos rojos, blancos y azules.",
+        "alt": "Participante con hanbok rosado en la celebración de Seollal de Ottoke en Medellín",
         "wide": false
       },
       {
         "src": "src/assets/fotos/eventos/seollal-amigas.jpg",
-        "alt": "Tres participantes posan haciendo gestos de corazón junto a la bandera de Corea del Sur.",
+        "alt": "Asistentes celebran el Año Nuevo Coreano frente a la bandera de Corea del Sur",
         "wide": false
       }
     ]

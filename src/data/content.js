@@ -37,6 +37,11 @@ export const money = (value) => `$${String(value).replace(/\B(?=(\d{3})+(?!\d))/
 /** A link the clients type: only https, so no javascript: or other schemes reach a page. */
 export const link = z.string().url().startsWith('https://');
 
-export const photo = z.object({ src: z.string(), alt: z.string().min(5) });
+export const photo = z.object({ src: z.string(), alt: z.string().optional() });
+
+/** Photos ready for a page: the image file, and a description built from `name` where the
+ * clients left theirs empty, so every photo still tells Google and screen readers what it is. */
+export const pictures = (fotos, name) =>
+  fotos.map((f, i) => ({ ...f, src: image(f.src), alt: f.alt?.trim() || `${name}, foto ${i + 1}` }));
 export const qa = z.object({ question: z.string().min(3), answer: z.string().min(3) });
 export { z };

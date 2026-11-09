@@ -8,15 +8,15 @@
   "fotos": [
     {
       "src": "src/assets/fotos/horquilla-dragon-base.png",
-      "alt": "Horquilla de dragón plateado con piedra azul, vista completa"
+      "alt": "Horquilla dragón azul de Ottoke, accesorio coreano para el pelo, vista completa"
     },
     {
       "src": "src/assets/fotos/horquillas-kok-v1.png",
-      "alt": "Horquilla de dragón plateado con piedra azul sujetando un moño de pelo castaño"
+      "alt": "Horquilla dragón azul en un moño, accesorio de inspiración coreana de Ottoke en Medellín"
     },
     {
       "src": "src/assets/fotos/horquilla-dragon-scene.png",
-      "alt": "Detalle del dragón plateado y la piedra azul de la horquilla sobre tela verde oliva"
+      "alt": "Detalle de la horquilla dragón azul de Ottoke sobre tela verde oliva"
     }
   ]
 }

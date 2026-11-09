@@ -1,4 +1,4 @@
-import { readAll, image, photo, money, z } from './content.js';
+import { readAll, image, photo, pictures, money, z } from './content.js';
 
 // One file per event in src/content/eventos, edited in the console. The page picks by date:
 // the soonest event that has not ended is the coming one; an ended event with its "recuerdo"
@@ -57,7 +57,7 @@ export const proximo = next
       poster: [next.poster1 ?? next.name, next.poster2 ?? ''],
       deadline: next.deadline ?? next.starts,
       price: next.price === undefined ? undefined : { display: money(next.price), value: next.price, currency: 'COP' },
-      photos: next.fotos.map((f) => ({ ...f, src: image(f.src) })),
+      photos: pictures(next.fotos, `${next.name}, evento de cultura coreana de Ottoke en Medellín`),
     }
   : null;
 
@@ -74,5 +74,5 @@ export const pasados = all
     place: e.place,
     text: e.recuerdo.text,
     card: { src: image(e.recuerdo.card), alt: e.recuerdo.cardAlt },
-    photos: e.recuerdo.fotos.map((f) => ({ ...f, src: image(f.src) })),
+    photos: pictures(e.recuerdo.fotos, `${e.name}, evento de cultura coreana de Ottoke en Medellín`),
   }));
