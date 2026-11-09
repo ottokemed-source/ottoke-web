@@ -22,7 +22,7 @@ const clock = { hour: 'numeric', minute: '2-digit' };
 const short = (date) => `${format(date, { day: 'numeric' })} ${format(date, { month: 'short' }).replace('.', '')}`;
 
 const signUp = evento && whatsapp(`Hola Ottoke, quiero un cupo para ${evento.name} del ${format(evento.starts, dayMonth)}.`);
-const notify = whatsapp('Hola Ottoke, quiero saber cuándo será el próximo evento.');
+const notify = site.signup ?? whatsapp('Hola Ottoke, quiero saber cuándo será el próximo evento.');
 const outside = { target: '_blank', rel: 'noopener noreferrer' };
 
 // Line drawings in the hand of the kimchi page, on a 24 px grid: the calendar and the pin

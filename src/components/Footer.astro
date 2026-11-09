@@ -11,6 +11,7 @@ const explore = [
   { label: 'Horquillas', href: '/horquillas/' },
   { label: 'Kimchi', href: '/kimchi/' },
   { label: 'Preguntas frecuentes', href: '/preguntas-frecuentes/' },
+  ...(site.signup ? [{ label: 'Avísame de próximos eventos', href: site.signup, outside: true }] : []),
 ];
 
 // line drawings of each network's mark, in the same hand as the other small icons
@@ -46,7 +47,7 @@ const meet = [
     <nav class="footer__nav" aria-labelledby="explora">
       <h2 id="explora">Explora Ottoke</h2>
       <ul>
-        {explore.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+        {explore.map((link) => <li><a href={link.href} {...(link.outside && { target: '_blank', rel: 'noopener noreferrer' })}>{link.label}</a></li>)}
       </ul>
     </nav>
     <nav class="footer__nav" aria-labelledby="encuentra">
