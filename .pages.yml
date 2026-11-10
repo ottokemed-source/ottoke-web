@@ -113,9 +113,8 @@ content:
       - { name: orden, label: Orden, description: Los números más bajos salen primero., type: number, default: 100 }
       - name: pattern
         label: Dibujo del fondo
+        description: Opcional. Si no eliges ninguno, la página lo elige sola.
         type: select
-        required: true
-        default: wezel
         options:
           values:
             - { name: wezel, label: Nudo }
@@ -170,7 +169,7 @@ content:
         label: Fotos
         description: 'Primero la horquilla sola, luego en el pelo, luego en la mano.'
         type: object
-        list: { min: 2, max: 4 }
+        list: { min: 1, max: 4 }
         fields:
           - { name: src, label: Foto, type: image, required: true, options: { media: fotos } }
           - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string, options: { maxlength: 160 } }
@@ -207,7 +206,7 @@ content:
           - { name: korean, label: Nombre coreano, type: string, required: true }
           - { name: href, label: Enlace a la receta, type: string, required: true }
           - { name: image, label: Foto, type: image, required: true, options: { media: fotos } }
-          - { name: alt, label: Qué se ve en la foto, type: string, required: true }
+          - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno.', type: string }
 
   # --- Eventos ---------------------------------------------------------------
   - name: eventos
@@ -223,7 +222,7 @@ content:
       sort: [starts]
     fields:
       - { name: name, label: Nombre, description: 'Ejemplo: Regala un Norigae.', type: string, required: true }
-      - { name: edition, label: Edición, description: 'Ejemplo: Navidad 2026 o 3.ª edición.', type: string, required: true }
+      - { name: edition, label: Edición, description: 'Opcional. Ejemplo: Navidad 2026 o 3.ª edición.', type: string }
       - { name: poster1, label: Nombre en el afiche, línea 1, description: Máximo 14 letras por línea., type: string, options: { maxlength: 14 } }
       - { name: poster2, label: Nombre en el afiche, línea 2, type: string, options: { maxlength: 14 } }
       - { name: theme, label: Tema, type: string }
@@ -301,7 +300,7 @@ content:
           - { name: name, label: Nombre, type: string, required: true }
           - { name: about, label: Profesión, type: string, required: true }
           - { name: photo, label: Foto, type: image, required: true, options: { media: fotos, path: nosotras } }
-          - { name: alt, label: Qué se ve en la foto, type: string, required: true }
+          - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno.', type: string }
           - { name: zoom, type: string, hidden: true }
       - name: historia
         label: Nuestra historia

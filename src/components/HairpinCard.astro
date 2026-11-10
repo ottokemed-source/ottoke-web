@@ -2,7 +2,7 @@
 // One hairpin in a list, linking to its page, with the same lines as a norigae card. At rest
 // it lies cut out on the paper and throws the same shadow as a norigae; the second photo
 // shows it worn: the card swaps to it under the pointer, on focus, and when it is "on" on
-// a touch screen.
+// a touch screen. A new hairpin with one photo stays cut out.
 import { Image } from 'astro:assets';
 import { price } from '../data/horquillas.js';
 
@@ -13,7 +13,7 @@ const [whole, worn] = item.photos;
 <a class="hairpin-card" href={`/horquillas/${item.slug}/`} data-card>
   <span class="hairpin-card__photo">
     <Image class="hairpin-card__base" src={item.cutout} alt={whole.alt} widths={[400, 800]} sizes="(min-width: 720px) 25vw, 50vw" format="webp" />
-    <Image class="hairpin-card__scene" src={worn.src} alt="" widths={[400, 800]} sizes="(min-width: 720px) 25vw, 50vw" format="webp" />
+    {worn && <Image class="hairpin-card__scene" src={worn.src} alt="" widths={[400, 800]} sizes="(min-width: 720px) 25vw, 50vw" format="webp" />}
   </span>
   <span class="card__name">{item.name}</span>
   <span class="card__wish">Horquilla</span>

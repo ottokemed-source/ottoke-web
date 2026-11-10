@@ -13,7 +13,7 @@ const date = z
 const all = readAll(
   'eventos',
   z.object({
-    edition: z.string().min(2),
+    edition: z.string().optional(),
     name: z.string().min(2),
     poster1: z.string().max(14).optional(),
     poster2: z.string().max(14).optional(),

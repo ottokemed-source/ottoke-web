@@ -17,7 +17,7 @@ const all = readAll(
     // both written by the cutout workflow; a new hairpin shows its first photo until then
     thread: z.string().regex(/^#[0-9A-Fa-f]{6}$/).default('#A8B3B2'),
     cutout: z.string().optional(),
-    fotos: z.array(photo).min(2).max(4),
+    fotos: z.array(photo).min(1).max(4),
   }),
 );
 

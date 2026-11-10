@@ -13,10 +13,10 @@ export const kimchi = read(
     salud_titulo: z.string().min(5).max(90),
     salud: z.string().min(10).max(400),
     fotos: z.array(photo).min(1).max(6),
-    platos: z.array(z.object({ name: z.string(), korean: z.string(), href: link, image: z.string(), alt: z.string() })),
+    platos: z.array(z.object({ name: z.string(), korean: z.string(), href: link, image: z.string(), alt: z.string().optional() })),
   }),
 );
 kimchi.fotos = pictures(kimchi.fotos, 'Kimchi artesanal de Ottoke hecho en Medellín');
-kimchi.platos = kimchi.platos.map((d) => ({ ...d, image: image(d.image) }));
+kimchi.platos = kimchi.platos.map((d) => ({ ...d, image: image(d.image), alt: d.alt?.trim() || `${d.korean}, ${d.name.toLowerCase()}` }));
 
 export const price = { display: money(kimchi.precio), weight: `${kimchi.peso_g} g`, value: kimchi.precio, currency: 'COP' };

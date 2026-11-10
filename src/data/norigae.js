@@ -14,7 +14,7 @@ const all = readAll(
     available: z.boolean().default(true),
     archived: z.boolean().default(false),
     orden: z.number().default(999),
-    pattern: z.enum(['wezel', 'gwiazdka', 'serce']),
+    pattern: z.enum(['wezel', 'gwiazdka', 'serce']).optional(),
     fotos: z.array(photo).default([]),
     // empty for a new piece until the cutout workflow has run (a few minutes after saving)
     thread: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
@@ -27,4 +27,4 @@ const all = readAll(
 export const norigae = all
   .filter((item) => !item.archived && item.cutout && item.thread)
   .sort((a, b) => a.orden - b.orden || a.name.localeCompare(b.name))
-  .map((item) => ({ ...item, og: og(`${item.slug}.jpg`, '/og/norigae.jpg'), fotos: pictures(item.fotos, `Norigae ${item.name.toLowerCase()} tejido a mano por Ottoke en Medellín`) }));
+  .map((item, i) => ({ ...item, pattern: item.pattern ?? ['wezel', 'gwiazdka', 'serce'][i % 3], og: og(`${item.slug}.jpg`, '/og/norigae.jpg'), fotos: pictures(item.fotos, `Norigae ${item.name.toLowerCase()} tejido a mano por Ottoke en Medellín`) }));

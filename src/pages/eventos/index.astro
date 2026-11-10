@@ -112,7 +112,7 @@ const jsonLd = evento && !evento.sample
       {
         evento && (
           <div class="poster" data-only="next">
-            <p class="poster__small">{evento.edition}</p>
+            {evento.edition && <p class="poster__small">{evento.edition}</p>}
             <h2 class="poster__name">
               <span>{evento.poster[0]}</span>
               <i class="poster__otto" />
@@ -205,7 +205,7 @@ const jsonLd = evento && !evento.sample
               <div class="memory__text">
                 <div>
                   <h3>{pasado.name}</h3>
-                  <p>{pasado.edition}, {pasado.when}</p>
+                  <p>{[pasado.edition, pasado.when].filter(Boolean).join(', ')}</p>
                   <p>{pasado.place}</p>
                 </div>
                 <div class="stack">
