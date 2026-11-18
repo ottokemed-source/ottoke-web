@@ -33,9 +33,11 @@ const all = readAll(
     fotos: z.array(photo).max(6).default([]),
     recuerdo: z
       .object({
-        text: z.array(z.string().min(10)).min(1).max(3),
-        card: z.string(),
-        cardAlt: z.string().min(5),
+        // all optional: a half-filled "Después del evento" must not stop the build;
+        // the event only goes to "Eventos anteriores" once text and photo are both in
+        text: z.array(z.string()).max(3).default([]),
+        card: z.string().optional(),
+        cardAlt: z.string().optional(),
         fotos: z.array(photo.extend({ wide: z.boolean().default(false) })).max(6).default([]),
       })
       .optional(),
@@ -65,7 +67,8 @@ const when = (iso) => new Intl.DateTimeFormat('es-CO', { timeZone: 'America/Bogo
 
 // newest first
 export const pasados = all
-  .filter((e) => Date.parse(e.ends) <= now && e.recuerdo)
+  .map((e) => (e.recuerdo ? { ...e, recuerdo: { ...e.recuerdo, text: e.recuerdo.text.map((t) => t.trim()).filter(Boolean) } } : e))
+  .filter((e) => Date.parse(e.ends) <= now && e.recuerdo?.text.length && e.recuerdo.card)
   .sort((a, b) => Date.parse(b.starts) - Date.parse(a.starts))
   .map((e) => ({
     edition: e.edition,
@@ -73,6 +76,6 @@ export const pasados = all
     when: when(e.starts),
     place: e.place,
     text: e.recuerdo.text,
-    card: { src: image(e.recuerdo.card), alt: e.recuerdo.cardAlt },
+    card: { src: image(e.recuerdo.card), alt: e.recuerdo.cardAlt?.trim() || `${e.name}, evento de cultura coreana de Ottoke en Medellín` },
     photos: pictures(e.recuerdo.fotos, `${e.name}, evento de cultura coreana de Ottoke en Medellín`),
   }));

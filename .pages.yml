@@ -254,13 +254,13 @@ content:
           - { name: src, label: Foto, type: image, required: true, options: { media: fotos, path: eventos } }
           - { name: alt, label: Qué se ve en la foto, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string, options: { maxlength: 160 } }
       - name: recuerdo
-        label: Después del evento
-        description: Al llenarlo, el evento pasa a "Eventos anteriores" cuando termina.
+        label: Después del evento (crónica)
+        description: 'Se llena cuando el evento ya pasó, no antes. No es el recuerdo que se llevan los asistentes. Con el texto y la foto principal, el evento aparece en "Eventos anteriores".'
         type: object
         fields:
           - { name: text, label: Qué hicimos (párrafos), type: text, list: { max: 3 } }
           - { name: card, label: Foto principal, type: image, options: { media: fotos, path: eventos } }
-          - { name: cardAlt, label: Qué se ve en la foto principal, type: string }
+          - { name: cardAlt, label: Qué se ve en la foto principal, description: 'Opcional. Si lo dejas vacío, la página escribe uno con el nombre.', type: string }
           - name: fotos
             label: Más fotos
             type: object
