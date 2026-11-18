@@ -32,6 +32,7 @@ const meet = [
     href: whatsapp('Hola Ottoke.'),
     icon: 'M8 2.3a5.7 5.7 0 0 0-4.9 8.6l-.8 2.8 2.9-.8A5.7 5.7 0 1 0 8 2.3zM6.2 5.9c-.2 2 1.9 4.1 3.9 3.9',
   },
+  ...(site.email ? [{ label: site.email, href: `mailto:${site.email}`, icon: 'M2.5 4h11v8h-11zM2.5 4.5 8 8.8l5.5-4.3', mail: true }] : []),
 ];
 ---
 
@@ -56,11 +57,12 @@ const meet = [
         {
           meet.map((link) => (
             <li>
-              <a href={link.href} target="_blank" rel="noopener noreferrer">
+              <a href={link.href} {...(!link.mail && { target: '_blank', rel: 'noopener noreferrer' })}>
                 <svg viewBox="0 0 16 16" width="20" height="20" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d={link.icon} />
                 </svg>
-                {link.label}
+                {/* the address breaks before "@" on a phone, not in the middle of a word */}
+                {link.mail ? <span>{link.label.split('@')[0]}<wbr />@{link.label.split('@')[1]}</span> : link.label}
               </a>
             </li>
           ))

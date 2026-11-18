@@ -28,7 +28,8 @@ const explore = [
 ];
 
 // Who Ottoke is, for search engines. A collective with no venue of its own, so no street
-// address or opening hours: only what the footer shows (city, networks, WhatsApp).
+// address or opening hours: only what the footer shows (city, networks, WhatsApp, e-mail) and
+// the hours they answer messages, as a contact point.
 const organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -39,6 +40,15 @@ const organization = {
   slogan: 'Cultura que une, enseña y transforma.',
   description: 'Colectivo de Medellín que acerca la cultura coreana con encuentros y productos hechos a mano.',
   telephone: site.phone,
+  ...(site.email && { email: site.email }),
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    telephone: site.phone,
+    ...(site.email && { email: site.email }),
+    availableLanguage: 'es',
+    hoursAvailable: { '@type': 'OpeningHoursSpecification', ...site.hours },
+  },
   address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'CO' },
   // no venue of its own, so no LocalBusiness: the area it serves instead (STATUS.md, 2026-11-03)
   areaServed: { '@type': 'City', name: site.city, containedInPlace: { '@type': 'Country', name: 'Colombia' } },

@@ -41,6 +41,7 @@ content:
         pattern:
           regex: '^\+57\d{10}$'
           message: Escribe +57 y los 10 números, sin espacios.
+      - { name: correo, label: Correo, description: 'Sale en el pie de la página y en Google. Vacío, no sale.', type: string, pattern: { regex: '^$|^[^@\s]+@[^@\s]+\.[^@\s]+$', message: 'Escribe un correo, por ejemplo ottokeculture@gmail.com.' } }
       - { name: pago, label: Cómo pagar, description: Sale en las preguntas de cada producto y en Preguntas frecuentes., type: text, required: true, options: { maxlength: 200 } }
       - { name: envio, label: Envíos, type: text, required: true, options: { maxlength: 400 } }
       - { name: instagram, label: Instagram (enlace), type: string, required: true }

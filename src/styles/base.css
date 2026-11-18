@@ -109,6 +109,7 @@ a {
 .swatch svg,
 .cards__all svg,
 .footer__nav svg {
+  flex: none;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.2;

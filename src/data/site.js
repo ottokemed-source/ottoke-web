@@ -5,6 +5,7 @@ const tienda = read(
   'tienda',
   z.object({
     whatsapp: z.string().regex(/^\+57\d{10}$/),
+    correo: z.union([z.string().email(), z.literal('')]).optional(),
     instagram: link,
     tiktok: link,
     dm: link,
@@ -25,6 +26,9 @@ export const site = {
   phone: tienda.whatsapp,
   // "301 117 5647", as their brochure prints it
   phoneDisplay: tienda.whatsapp.slice(3).replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3'),
+  email: tienda.correo || null,
+  // when they answer messages (Google Doc, section 10): Monday to Friday, 9 a.m. to 5 p.m.
+  hours: { dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '17:00' },
   payment: tienda.pago,
   shipping: tienda.envio,
   signup: tienda.formulario || null,

@@ -677,7 +677,8 @@
 
 .footer__main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, ...): a long word (the e-mail) wraps instead of pushing the page wider */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-7) var(--space-5);
   margin-block: var(--space-7) var(--space-6);
 }
@@ -725,6 +726,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
+  max-width: 100%;
+  overflow-wrap: break-word;
   text-decoration: none;
 }
 
