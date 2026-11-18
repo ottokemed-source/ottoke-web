@@ -19,8 +19,8 @@
         "wide": false
       },
       {
-        "src": "src/assets/fotos/whatsapp-image-2026-11-17-at-23556-pm.jpeg",
-        "alt": "Los participantes juegando un juego tradicional coreano",
+        "src": "src/assets/fotos/eventos/seollal-grupo.jpg",
+        "alt": "Participante con hanbok rosado en la celebración de Seollal de Ottoke en Medellín",
         "wide": false
       },
       {
@@ -29,7 +29,5 @@
         "wide": false
       }
     ]
-  },
-  "deadline": "2026-11-17T14:33",
-  "full": false
+  }
 }
