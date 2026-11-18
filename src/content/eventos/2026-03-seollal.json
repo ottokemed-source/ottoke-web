@@ -19,7 +19,7 @@
         "wide": false
       },
       {
-        "src": "src/assets/fotos/eventos/seollal-grupo.jpg",
+        "src": "src/assets/fotos/129197.jpg",
         "alt": "Participante con hanbok rosado en la celebración de Seollal de Ottoke en Medellín",
         "wide": false
       },
@@ -29,5 +29,7 @@
         "wide": false
       }
     ]
-  }
+  },
+  "deadline": "2026-11-18T18:17",
+  "full": false
 }
